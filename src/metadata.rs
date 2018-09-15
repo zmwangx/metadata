@@ -1,10 +1,9 @@
-use ffmpeg;
 use ffmpeg::codec::decoder::audio::Audio;
 use ffmpeg::codec::decoder::video::Video;
 use ffmpeg::format::context::Input;
 use ffmpeg::util::channel_layout::ChannelLayout;
 use ffmpeg::util::rational::Rational;
-use ffmpeg::Stream;
+use ffmpeg::{self, DictionaryRef, Stream};
 use handlebars::Handlebars;
 use regex::Regex;
 use std::fs;
@@ -26,6 +25,36 @@ pub struct MediaFileMetadataOptions {
     pub include_tags: bool,
     pub include_all_tags: bool,
     pub decode_frames: bool,
+}
+
+trait Tags {
+    fn to_tags(&self) -> Vec<(String, String)>;
+
+    fn to_filtered_tags(&self) -> Vec<(String, String)> {
+        self.to_tags()
+            .iter()
+            .filter(|(k, _)| !Self::tag_is_boring(&k))
+            .cloned()
+            .collect()
+    }
+
+    fn tag_is_boring(key: &str) -> bool {
+        lazy_static!{
+            // Some fixed names, plus tags beginning with an underscore (e.g.,
+            // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
+            // (e.g., com.apple.quicktime.player.* tags).
+            static ref BORING_PATTERN: Regex = Regex::new(r"^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
+        }
+        BORING_PATTERN.is_match(key)
+    }
+}
+
+impl<'a> Tags for DictionaryRef<'a> {
+    fn to_tags(&self) -> Vec<(String, String)> {
+        self.iter()
+            .map(|(k, v)| (k.to_string(), v.to_string()))
+            .collect()
+    }
 }
 
 // TODO: rewrite this module in an object-oriented way, i.e., define and
@@ -127,17 +156,6 @@ fn get_dimensions_and_aspect_radio(
     )
 }
 
-fn tag_is_boring(key: &str) -> bool {
-    lazy_static!{
-        // Some fixed names, plus tags beginning with an underscore (e.g.,
-        // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
-        // (e.g., com.apple.quicktime.player.* tags).
-        static ref BORING_PATTERN: Regex = Regex::new(r"^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
-    }
-    BORING_PATTERN.is_match(key)
-}
-
-// TODO: tags per stream
 pub fn metadata<P: AsRef<Path>>(
     path: &P,
     options: &MediaFileMetadataOptions,
@@ -203,16 +221,6 @@ pub fn metadata<P: AsRef<Path>>(
     } else {
         None
     };
-    let tags: Vec<_> = format_ctx
-        .metadata()
-        .iter()
-        .map(|kv| (kv.0.to_string(), kv.1.to_string()))
-        .collect();
-    let filtered_tags: Vec<_> = tags
-        .iter()
-        .filter(|kv| !tag_is_boring(&kv.0))
-        .cloned()
-        .collect();
 
     let mut handlebars = Handlebars::new();
     handlebars.register_helper("padkey", Box::new(padkey));
@@ -246,9 +254,18 @@ pub fn metadata<P: AsRef<Path>>(
              {{/if}}\
              Bit rate:               {{{bit_rate}}}\n\
              {{#each streams as |stream|}}    {{{stream}}}\n{{/each}}\
+             \
              {{#if tags}}\
              Tags:\n\
              {{#each tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+             {{/if}}\
+             \
+             {{#if stream_tags}}\
+             {{#each stream_tags as |s|}}\
+             {{#if s.tags}}  #{{{s.index}}}\n\
+             {{#each s.tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+             {{/if}}\
+             {{/each}}\
              {{/if}}\
              ",
             &json!({
@@ -267,10 +284,23 @@ pub fn metadata<P: AsRef<Path>>(
                 "frame_rate": frame_rate,
                 "bit_rate": bit_rate,
                 "streams": stream_metadata_strings,
+
                 "tags": if options.include_all_tags {
-                    Some(tags)
+                    Some(format_ctx.metadata().to_tags())
                 } else if options.include_tags {
-                    Some(filtered_tags)
+                    Some(format_ctx.metadata().to_filtered_tags())
+                } else {
+                    None
+                },
+
+                "stream_tags": if options.include_tags {
+                    Some(format_ctx
+                            .streams()
+                            .map(|s| json!({
+                                "index": s.index(),
+                                "tags": if options.include_all_tags { s.metadata().to_tags() } else { s.metadata().to_filtered_tags() },
+                            }))
+                            .collect::<Vec<_>>())
                 } else {
                     None
                 },
