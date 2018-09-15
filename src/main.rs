@@ -23,6 +23,7 @@ extern crate tempfile;
 
 use clap::App;
 use std::path::Path;
+use std::process;
 
 mod metadata;
 mod prejudice;
@@ -30,6 +31,13 @@ mod scan;
 mod util;
 
 fn main() {
+    match run_main() {
+        true => process::exit(0),
+        false => process::exit(1),
+    }
+}
+
+fn run_main() -> bool {
     env_logger::init();
 
     let matches = App::new("metadata")
@@ -51,7 +59,12 @@ fn main() {
     let include_tags = matches.is_present("tags") || matches.is_present("all-tags");
     let decode_frames = matches.is_present("scan");
 
-    ffmpeg::init().expect("failed to init FFmpeg");
+    let mut successful = true;
+
+    if ffmpeg::init().is_err() {
+        eprintln!("Error: failed to initialize libav*");
+        return false;
+    }
     unsafe {
         ffmpeg::ffi::av_log_set_level(ffmpeg::ffi::AV_LOG_FATAL);
     }
@@ -59,11 +72,17 @@ fn main() {
     for file in files {
         if !Path::new(file).is_file() {
             eprintln!("Error: \"{}\" does not exist or is not a file", file);
+            successful = false;
             continue;
         }
         match metadata::metadata(&file, include_checksum, include_tags, decode_frames) {
             Ok(pretty) => println!("{}", pretty),
-            Err(error) => eprintln!("Error: {}", error),
+            Err(error) => {
+                eprintln!("Error: {}", error);
+                successful = false;
+            }
         }
     }
+
+    successful
 }
