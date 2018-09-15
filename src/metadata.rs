@@ -20,6 +20,12 @@ use util;
 // additional arguments (a statement I basically pulled out of my ass).
 handlebars_helper!(padkey: |key: str| format!("{:<20}", &[key, ": "].join("")));
 
+pub struct MediaFileMetadataOptions {
+    pub include_checksum: bool,
+    pub include_tags: bool,
+    pub decode_frames: bool,
+}
+
 // TODO: rewrite this module in an object-oriented way, i.e., define and
 // use the following structs:
 //
@@ -123,9 +129,7 @@ fn get_dimensions_and_aspect_radio(
 // TODO: tags per stream
 pub fn metadata<P: AsRef<Path>>(
     path: &P,
-    include_checksum: bool,
-    include_tags: bool,
-    decode_frames: bool,
+    options: &MediaFileMetadataOptions,
 ) -> io::Result<String> {
     let mut format_ctx: Input = ffmpeg::format::input(path)?;
     let path: &Path = path.as_ref();
@@ -150,7 +154,7 @@ pub fn metadata<P: AsRef<Path>>(
     let pixel_dimensions: String;
     let sample_aspect_ratio: String;
     let display_aspect_ratio: String;
-    let scan_type: Option<ScanType> = scan::get_scan_type(&mut format_ctx, decode_frames)?;
+    let scan_type: Option<ScanType> = scan::get_scan_type(&mut format_ctx, options.decode_frames)?;
     let frame_rate: String;
     let bit_rate_num: i64 = unsafe { (*format_ctx.as_ptr()).bit_rate };
     let bit_rate: String = if bit_rate_num != 0 {
@@ -183,12 +187,12 @@ pub fn metadata<P: AsRef<Path>>(
     for stream in format_ctx.streams() {
         stream_metadata_strings.push(stream_metadata(stream)?);
     }
-    let hash = if include_checksum {
+    let hash = if options.include_checksum {
         Some(util::sha256_hash(path)?)
     } else {
         None
     };
-    let tags: Option<Vec<_>> = if include_tags {
+    let tags: Option<Vec<_>> = if options.include_tags {
         Some(
             format_ctx
                 .metadata()

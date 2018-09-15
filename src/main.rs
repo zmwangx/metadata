@@ -22,6 +22,7 @@ extern crate regex;
 extern crate tempfile;
 
 use clap::App;
+use metadata::MediaFileMetadataOptions;
 use std::path::Path;
 use std::process;
 
@@ -30,6 +31,7 @@ mod prejudice;
 mod scan;
 mod util;
 
+// TODO: add integration tests
 fn main() {
     match run_main() {
         true => process::exit(0),
@@ -55,9 +57,11 @@ fn run_main() -> bool {
         )
         .get_matches();
     let files = matches.values_of("FILE").unwrap();
-    let include_checksum = matches.is_present("checksum");
-    let include_tags = matches.is_present("tags") || matches.is_present("all-tags");
-    let decode_frames = matches.is_present("scan");
+    let options = MediaFileMetadataOptions {
+        include_checksum: matches.is_present("checksum"),
+        include_tags: matches.is_present("tags") || matches.is_present("all-tags"),
+        decode_frames: matches.is_present("scan"),
+    };
 
     let mut successful = true;
 
@@ -75,7 +79,7 @@ fn run_main() -> bool {
             successful = false;
             continue;
         }
-        match metadata::metadata(&file, include_checksum, include_tags, decode_frames) {
+        match metadata::metadata(&file, &options) {
             Ok(pretty) => println!("{}", pretty),
             Err(error) => {
                 eprintln!("Error: {}", error);
