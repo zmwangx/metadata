@@ -139,8 +139,13 @@ pub fn metadata<P: AsRef<Path>>(
     let file_size_base10: String = util::human_size(file_size, util::Base::Base10);
     let file_size_base2: String = util::human_size(file_size, util::Base::Base2);
     let container_format: String = prejudice::format_name(&format_ctx.format(), path);
-    let duration_seconds: f64 = format_ctx.duration() as f64 / f64::from(ffmpeg::ffi::AV_TIME_BASE);
-    let duration: String = util::format_seconds(duration_seconds);
+    let duration_seconds: Option<f64> = if format_ctx.duration() >= 0 {
+        Some(format_ctx.duration() as f64 / ffmpeg::ffi::AV_TIME_BASE as f64)
+    } else {
+        None
+    };
+    let duration: String =
+        duration_seconds.map_or("Not available".to_string(), util::format_seconds);
     let pixel_dimensions: String;
     let sample_aspect_ratio: String;
     let display_aspect_ratio: String;
@@ -149,10 +154,10 @@ pub fn metadata<P: AsRef<Path>>(
     let bit_rate_num: i64 = unsafe { (*format_ctx.as_ptr()).bit_rate };
     let bit_rate: String = if bit_rate_num != 0 {
         format!("{:.0} kb/s", bit_rate_num as f64 / 1000f64)
-    } else if duration_seconds > 0f64 {
+    } else if duration_seconds.is_some() && duration_seconds.unwrap() > 0f64 {
         format!(
             "{:.0} kb/s",
-            (file_size * 8) as f64 / duration_seconds / 1000f64
+            (file_size * 8) as f64 / duration_seconds.unwrap() / 1000f64
         )
     } else {
         "".to_string()
