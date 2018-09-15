@@ -13,6 +13,7 @@ digest = { version = "0.7.5", features = ["std"] }
 serde = "1.0.78"
 log = "0.4.5"
 env_logger = "0.5.13"
+clap = "2.32.0"
 
 [dev-dependencies]
 quickcheck = "0.7.1"

@@ -1,3 +1,4 @@
+extern crate clap;
 extern crate env_logger;
 extern crate ffmpeg;
 #[macro_use]
@@ -20,28 +21,45 @@ extern crate regex;
 #[cfg(test)]
 extern crate tempfile;
 
+use clap::App;
+
 mod metadata;
 mod prejudice;
 mod scan;
 mod util;
 
-// TODO: argument parsing
-// TODO: --checksum: SHA-256 checksum
-// TODO: --tags: show metadata tags (--all-tags)
-// TODO: --scan: scan::get_scan_type with decode_frames = true
 fn main() {
     env_logger::init();
+
+    let matches = App::new("metadata")
+        .version("0.1.0")
+        .author("Zhiming Wang <metadata@zhimingwang.org>")
+        .about("Media file metadata for human consumption.")
+        .args_from_usage(
+            "-c, --checksum     'Include file checksum(s)'
+            -t, --tags          'Print metadata tags, except mundane ones'
+            -A, --all-tags      'Print all metadata tags'
+            --scan              'Decode frames to determine scan type \
+                                 (slower, but may determine interlaced more accurately; \
+                                  see man page for details)'
+            <FILE>...           'Media file(s)'",
+        )
+        .get_matches();
+    let files = matches.values_of("FILE").unwrap();
+    let include_checksum = matches.is_present("checksum");
+    let include_tags = matches.is_present("tags") || matches.is_present("all-tags");
+    let decode_frames = matches.is_present("scan");
+
     ffmpeg::init().expect("failed to init FFmpeg");
     unsafe {
         ffmpeg::ffi::av_log_set_level(ffmpeg::ffi::AV_LOG_FATAL);
     }
-    // TODO: make sure path exists and is file
-    if let Some(path) = &std::env::args().nth(1) {
-        match metadata::metadata(path, false, false) {
+
+    for file in files {
+        // TODO: make sure file is the path of an existing file
+        match metadata::metadata(&file, include_checksum, include_tags, decode_frames) {
             Ok(pretty) => println!("{}", pretty),
             Err(error) => println!("Error: {}", error),
         }
-    } else {
-        println!("Error: no file specified");
     }
 }

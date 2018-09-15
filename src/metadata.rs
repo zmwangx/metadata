@@ -125,6 +125,7 @@ pub fn metadata<P: AsRef<Path>>(
     path: &P,
     include_checksum: bool,
     include_tags: bool,
+    decode_frames: bool,
 ) -> io::Result<String> {
     let mut format_ctx: Input = ffmpeg::format::input(path)?;
     let path: &Path = path.as_ref();
@@ -149,7 +150,7 @@ pub fn metadata<P: AsRef<Path>>(
     let pixel_dimensions: String;
     let sample_aspect_ratio: String;
     let display_aspect_ratio: String;
-    let scan_type: Option<ScanType> = scan::get_scan_type(&mut format_ctx, false)?;
+    let scan_type: Option<ScanType> = scan::get_scan_type(&mut format_ctx, decode_frames)?;
     let frame_rate: String;
     let bit_rate_num: i64 = unsafe { (*format_ctx.as_ptr()).bit_rate };
     let bit_rate: String = if bit_rate_num != 0 {
