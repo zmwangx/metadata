@@ -330,7 +330,7 @@ pub fn stream_metadata(stream: Stream) -> io::Result<String> {
             let color_space = video.color_space().name();
             let color_primaries = video.color_primaries().name();
             let color_trc = video.color_transfer_characteristic().name();
-            let _color_specs_components: Vec<_> = [color_range.map(|v| v.to_string()), {
+            let color_specs = [color_range.map(|v| v.to_string()), {
                 // https://github.com/FFmpeg/FFmpeg/blob/n4.0.2/libavcodec/utils.c#L1220-L1233
                 if color_space.or(color_primaries).or(color_trc).is_some() {
                     if color_space == color_primaries && color_space == color_trc {
@@ -349,8 +349,8 @@ pub fn stream_metadata(stream: Stream) -> io::Result<String> {
             }].iter()
                 .filter(|v| v.is_some())
                 .map(|v| v.clone().unwrap())
-                .collect();
-            let color_specs = _color_specs_components.join(", ");
+                .collect::<Vec<_>>()
+                .join(", ");
             let dim_sar_dar = get_dimensions_and_aspect_radio(&video).1;
             let frame_rate = get_frame_rate(&video).1;
             let bit_rate_num = video.bit_rate();
