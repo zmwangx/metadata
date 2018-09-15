@@ -35,6 +35,8 @@ pub fn format_name(format: &Input, path: &Path) -> String {
         "aiff" => "Audio Interchange File Format (AIFF)",
         // "ASF (Advanced / Active Streaming Format)"
         "asf" => "Advanced Systems Format (ASF)",
+        // "SSA (SubStation Alpha) subtitle"
+        "ass" => "Advanced SubStation Alpha (ASS)",
         // "FLV (Flash Video)""
         "flv" => "Flash Video (FLV)",
         // "piped jpeg sequence"
@@ -60,6 +62,18 @@ pub fn format_name(format: &Input, path: &Path) -> String {
         },
         // "piped png sequence"
         "png_pipe" => "PNG",
+        // "RealText subtitle format"
+        "realtext" => "RealText",
+        // "SAMI subtitle format"
+        "sami" => "Synchronized Accessible Media Interchange (SAMI)",
+        // "SubRip subtitle"
+        "srt" => "SubRip",
+        // "SubViewer subtitle format"
+        "subviewer" => "SubViewer",
+        // "SubViewer v1 subtitle format"
+        "subviewer1" => "SubViewer v1",
+        // "WebVTT subtitle"
+        "webvtt" => "WebVTT",
         _ => return capitalize(format.description().to_string()),
     }.to_string()
 }
@@ -106,11 +120,23 @@ pub fn codec_name(codec_id: Id) -> String {
 
         // Subtitle codecs
         // "ASS (Advanced SSA) subtitle"
-        "ass" => "SubStation Alpha",
+        "ass" => "Advanced SubStation Alpha (ASS)",
+        // "RealText subtitle"
+        "realtext" => "RealText",
+        // "SAMI subtitle"
+        "sami" => "Synchronized Accessible Media Interchange (SAMI)",
         // "SubRip subtitle with embedded timing"
         "srt" => "SubRip",
+        // "SSA (SubStation Alpha) subtitle"
+        "ssa" => "SubStation Alpha (SSA)",
         // "SubRip subtitle"
         "subrip" => "SubRip",
+        // "SubViewer subtitle format"
+        "subviewer" => "SubViewer",
+        // "SubViewer v1 subtitle format"
+        "subviewer1" => "SubViewer v1",
+        // "WebVTT subtitle"
+        "webvtt" => "WebVTT",
 
         _ => return capitalize(long_name.to_string()),
     }.to_string()
