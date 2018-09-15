@@ -1,36 +1,14 @@
+extern crate metadata;
+
 extern crate clap;
 extern crate env_logger;
 extern crate ffmpeg;
-#[macro_use]
-extern crate handlebars;
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate log;
-extern crate regex;
-extern crate serde;
-extern crate sha2;
-#[macro_use]
-extern crate serde_json;
-
-#[cfg(test)]
-#[macro_use]
-extern crate quickcheck;
-#[cfg(test)]
-extern crate tempfile;
 
 use clap::App;
-use metadata::MediaFileMetadataOptions;
+use metadata::metadata::MediaFileMetadataOptions;
 use std::path::Path;
 use std::process;
 
-mod metadata;
-mod prejudice;
-mod scan;
-mod tags;
-mod util;
-
-// TODO: add integration tests
 fn main() {
     match run_main() {
         true => process::exit(0),
@@ -79,7 +57,7 @@ fn run_main() -> bool {
             successful = false;
             continue;
         }
-        match metadata::metadata(&file, &options) {
+        match metadata::metadata::metadata(&file, &options) {
             Ok(pretty) => println!("{}", pretty),
             Err(error) => {
                 eprintln!("Error: {}", error);

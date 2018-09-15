@@ -3,6 +3,10 @@ name = "metadata"
 version = "0.1.0"
 authors = ["Zhiming Wang <i@zhimingwang.org>"]
 
+[lib]
+name = "metadata"
+path = "src/lib.rs"
+
 [dependencies]
 clap = "2.32.0"
 digest = { version = "0.7.5", features = ["std"] }
