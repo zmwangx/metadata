@@ -34,6 +34,9 @@ impl Serialize for ScanType {
 
 const NUM_FRAMES_TO_INSPECT: usize = 30;
 
+// An unknown field order, AV_FIELD_UNKNOWN, is treated as a sign of being
+// progressive, unless decode_frames is true, in which case the first 30 frames
+// are decoded to look for interlaced frames.
 pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Option<ScanType>> {
     let stream_index;
     let mut decoder;
