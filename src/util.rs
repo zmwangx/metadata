@@ -77,7 +77,7 @@ mod tests {
     impl Arbitrary for U64 {
         fn arbitrary<G: Gen>(g: &mut G) -> U64 {
             U64 {
-                value: 2f64.powf(8f64 + 56f64 * g.next_u32() as f64 / (std::u32::MAX as f64 + 1f64))
+                value: 2f64.powf(8f64 + 55f64 * g.next_u32() as f64 / (std::u32::MAX as f64 + 1f64))
                     as u64,
             }
         }
