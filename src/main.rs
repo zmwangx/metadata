@@ -27,6 +27,7 @@ use std::process;
 mod metadata;
 mod prejudice;
 mod scan;
+mod tags;
 mod util;
 
 // TODO: add integration tests

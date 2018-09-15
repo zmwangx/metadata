@@ -3,9 +3,8 @@ use ffmpeg::codec::decoder::video::Video;
 use ffmpeg::format::context::Input;
 use ffmpeg::util::channel_layout::ChannelLayout;
 use ffmpeg::util::rational::Rational;
-use ffmpeg::{self, DictionaryRef, Stream};
+use ffmpeg::{self, Stream};
 use handlebars::Handlebars;
-use regex::Regex;
 use std::fs;
 use std::io;
 use std::path::Path;
@@ -13,6 +12,7 @@ use std::str::from_utf8_unchecked;
 
 use prejudice;
 use scan::{self, ScanType};
+use tags::Tags;
 use util;
 
 // The width (20) here really should not be hard-coded, but the
@@ -25,36 +25,6 @@ pub struct MediaFileMetadataOptions {
     pub include_tags: bool,
     pub include_all_tags: bool,
     pub decode_frames: bool,
-}
-
-trait Tags {
-    fn to_tags(&self) -> Vec<(String, String)>;
-
-    fn to_filtered_tags(&self) -> Vec<(String, String)> {
-        self.to_tags()
-            .iter()
-            .filter(|(k, _)| !Self::tag_is_boring(&k))
-            .cloned()
-            .collect()
-    }
-
-    fn tag_is_boring(key: &str) -> bool {
-        lazy_static!{
-            // Some fixed names, plus tags beginning with an underscore (e.g.,
-            // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
-            // (e.g., com.apple.quicktime.player.* tags).
-            static ref BORING_PATTERN: Regex = Regex::new(r"^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
-        }
-        BORING_PATTERN.is_match(key)
-    }
-}
-
-impl<'a> Tags for DictionaryRef<'a> {
-    fn to_tags(&self) -> Vec<(String, String)> {
-        self.iter()
-            .map(|(k, v)| (k.to_string(), v.to_string()))
-            .collect()
-    }
 }
 
 // TODO: rewrite this module in an object-oriented way, i.e., define and
