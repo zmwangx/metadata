@@ -1,0 +1,20 @@
+[package]
+name = "metadata"
+version = "0.1.0"
+authors = ["Zhiming Wang <i@zhimingwang.org>"]
+
+[dependencies]
+ffmpeg = { git = "https://github.com/zmwangx/rust-ffmpeg" }
+handlebars = "1.0.3"
+serde_json = "1.0.27"
+lazy_static = "1.1.0"
+sha2 = "0.7.1"
+digest = { version = "0.7.5", features = ["std"] }
+serde = "1.0.78"
+log = "0.4.5"
+env_logger = "0.5.13"
+
+[dev-dependencies]
+quickcheck = "0.7.1"
+regex = "1.0.5"
+tempfile = "3.0.3"
