@@ -6,6 +6,7 @@ use ffmpeg::util::channel_layout::ChannelLayout;
 use ffmpeg::util::rational::Rational;
 use ffmpeg::Stream;
 use handlebars::Handlebars;
+use regex::Regex;
 use std::fs;
 use std::io;
 use std::path::Path;
@@ -23,6 +24,7 @@ handlebars_helper!(padkey: |key: str| format!("{:<20}", &[key, ": "].join("")));
 pub struct MediaFileMetadataOptions {
     pub include_checksum: bool,
     pub include_tags: bool,
+    pub include_all_tags: bool,
     pub decode_frames: bool,
 }
 
@@ -125,7 +127,16 @@ fn get_dimensions_and_aspect_radio(
     )
 }
 
-// TODO: filter boring tags unless --all-tags
+fn tag_is_boring(key: &str) -> bool {
+    lazy_static!{
+        // Some fixed names, plus tags beginning with an underscore (e.g.,
+        // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
+        // (e.g., com.apple.quicktime.player.* tags).
+        static ref BORING_PATTERN: Regex = Regex::new(r"^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
+    }
+    BORING_PATTERN.is_match(key)
+}
+
 // TODO: tags per stream
 pub fn metadata<P: AsRef<Path>>(
     path: &P,
@@ -192,17 +203,17 @@ pub fn metadata<P: AsRef<Path>>(
     } else {
         None
     };
-    let tags: Option<Vec<_>> = if options.include_tags {
-        Some(
-            format_ctx
-                .metadata()
-                .iter()
-                .map(|kv| (kv.0.to_string(), kv.1.to_string()))
-                .collect(),
-        )
-    } else {
-        None
-    };
+    let tags: Vec<_> = format_ctx
+        .metadata()
+        .iter()
+        .map(|kv| (kv.0.to_string(), kv.1.to_string()))
+        .collect();
+    let filtered_tags: Vec<_> = tags
+        .iter()
+        .filter(|kv| !tag_is_boring(&kv.0))
+        .cloned()
+        .collect();
+
     let mut handlebars = Handlebars::new();
     handlebars.register_helper("padkey", Box::new(padkey));
     Ok(handlebars
@@ -256,7 +267,13 @@ pub fn metadata<P: AsRef<Path>>(
                 "frame_rate": frame_rate,
                 "bit_rate": bit_rate,
                 "streams": stream_metadata_strings,
-                "tags": tags,
+                "tags": if options.include_all_tags {
+                    Some(tags)
+                } else if options.include_tags {
+                    Some(filtered_tags)
+                } else {
+                    None
+                },
             }),
         )
         .expect("format template rendering failure"))
