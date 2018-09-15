@@ -22,6 +22,7 @@ extern crate regex;
 extern crate tempfile;
 
 use clap::App;
+use std::path::Path;
 
 mod metadata;
 mod prejudice;
@@ -56,10 +57,13 @@ fn main() {
     }
 
     for file in files {
-        // TODO: make sure file is the path of an existing file
+        if !Path::new(file).is_file() {
+            eprintln!("Error: \"{}\" does not exist or is not a file", file);
+            continue;
+        }
         match metadata::metadata(&file, include_checksum, include_tags, decode_frames) {
             Ok(pretty) => println!("{}", pretty),
-            Err(error) => println!("Error: {}", error),
+            Err(error) => eprintln!("Error: {}", error),
         }
     }
 }
