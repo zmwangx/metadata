@@ -1,0 +1,11 @@
+Filename:               jpeg.jpeg
+File size:              203 (203B, 203B)
+Container format:       JPEG
+Duration:               Not available
+Pixel dimensions:       100x100
+Sample aspect ratio:    1:1
+Display aspect ratio:   1:1
+Scan type:              Progressive scan
+Bit rate:               
+    #0: Video, Motion JPEG, gray (bt470bg/unknown/unknown), 100x100 (SAR 1:1, DAR 1:1)
+

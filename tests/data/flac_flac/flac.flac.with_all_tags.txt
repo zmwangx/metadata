@@ -1,0 +1,9 @@
+Filename:               flac.flac
+File size:              8312 (8.32KB, 8.12KiB)
+Container format:       Raw FLAC
+Duration:               00:00:00.12
+Bit rate:               573 kb/s
+    #0: Audio, FLAC, 44100 Hz, mono
+Tags:
+    ENCODER:            Lavf56.25.101
+

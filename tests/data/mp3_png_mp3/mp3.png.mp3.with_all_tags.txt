@@ -1,0 +1,16 @@
+Filename:               mp3.png.mp3
+File size:              1815 (1.82KB, 1.78KiB)
+Container format:       MP3
+Duration:               00:00:00.18
+Pixel dimensions:       100x100
+Sample aspect ratio:    1:1
+Display aspect ratio:   1:1
+Scan type:              Progressive scan
+Bit rate:               79 kb/s
+    #0: Audio, MP3, 44100 Hz, mono, 64 kb/s
+    #1: Video, PNG, monob (pc), 100x100 (SAR 1:1, DAR 1:1)
+Tags:
+    encoder:            Lavf56.25.101
+  #1
+    comment:            Other
+

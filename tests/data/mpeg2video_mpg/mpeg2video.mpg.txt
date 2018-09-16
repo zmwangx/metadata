@@ -1,0 +1,12 @@
+Filename:               mpeg2video.mpg
+File size:              4096 (4.10KB, 4.00KiB)
+Container format:       MPEG-2 Program Stream (MPEG-PS)
+Duration:               00:00:01.16
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               28 kb/s
+    #0: Video, MPEG-2 video, yuv420p (tv), 128x72 (SAR 1:1, DAR 16:9), 25 fps
+

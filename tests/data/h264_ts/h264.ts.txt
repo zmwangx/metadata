@@ -1,0 +1,12 @@
+Filename:               h264.ts
+File size:              11092 (11.1KB, 10.9KiB)
+Container format:       MPEG-2 Transport Stream (MPEG-TS)
+Duration:               00:00:02.00
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               44 kb/s
+    #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
+

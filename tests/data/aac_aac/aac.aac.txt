@@ -1,0 +1,7 @@
+Filename:               aac.aac
+File size:              1954 (1.96KB, 1.91KiB)
+Container format:       Raw ADTS AAC
+Duration:               00:00:00.16
+Bit rate:               96 kb/s
+    #0: Audio, AAC (LC), 44100 Hz, mono, 96 kb/s
+

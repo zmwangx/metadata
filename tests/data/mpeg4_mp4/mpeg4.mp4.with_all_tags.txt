@@ -1,0 +1,20 @@
+Filename:               mpeg4.mp4
+File size:              3063 (3.07KB, 3.00KiB)
+Container format:       MPEG-4 Part 14 (MP4)
+Duration:               00:00:02.00
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               12 kb/s
+    #0: Video, MPEG-4 Part 2, yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps, 8 kb/s
+Tags:
+    major_brand:        isom
+    minor_version:      512
+    compatible_brands:  isomiso2mp41
+    encoder:            Lavf56.25.101
+  #0
+    language:           und
+    handler_name:       VideoHandler
+

@@ -1,0 +1,15 @@
+Filename:               h264.srt.mkv
+File size:              2673 (2.68KB, 2.62KiB)
+Container format:       Matroska (MKV)
+Duration:               00:00:02.08
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               10 kb/s
+    #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
+    #1: Subtitle, SubRip
+  #0
+    LANGUAGE:           und
+

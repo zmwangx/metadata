@@ -1,0 +1,21 @@
+Filename:               h264.ass.mkv
+File size:              3243 (3.25KB, 3.17KiB)
+Container format:       Matroska (MKV)
+Duration:               00:00:02.08
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               12 kb/s
+    #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
+    #1: Subtitle, Advanced SubStation Alpha (ASS)
+Tags:
+    COMPATIBLE_BRANDS:  isomiso2avc1mp41
+    MAJOR_BRAND:        isom
+    MINOR_VERSION:      512
+    ENCODER:            Lavf56.25.101
+  #0
+    LANGUAGE:           und
+    HANDLER_NAME:       VideoHandler
+

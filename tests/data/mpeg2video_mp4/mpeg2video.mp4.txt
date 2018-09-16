@@ -1,0 +1,12 @@
+Filename:               mpeg2video.mp4
+File size:              4579 (4.58KB, 4.48KiB)
+Container format:       MPEG-4 Part 14 (MP4)
+Duration:               00:00:02.00
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               18 kb/s
+    #0: Video, MPEG-2 video, yuv420p (tv), 128x72 (SAR 1:1, DAR 16:9), 25 fps, 14 kb/s
+

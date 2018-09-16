@@ -1,0 +1,12 @@
+Filename:               mpeg2video.m2v
+File size:              3520 (3.52KB, 3.44KiB)
+Container format:       Raw MPEG video
+Duration:               Not available
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               
+    #0: Video, MPEG-2 video, yuv420p (tv), 128x72 (SAR 1:1, DAR 16:9), 25 fps
+

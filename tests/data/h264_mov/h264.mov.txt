@@ -1,0 +1,12 @@
+Filename:               h264.mov
+File size:              2859 (2.86KB, 2.80KiB)
+Container format:       QuickTime File Format
+Duration:               00:00:02.00
+Pixel dimensions:       128x72
+Sample aspect ratio:    1:1
+Display aspect ratio:   16:9
+Scan type:              Progressive scan
+Frame rate:             25 fps
+Bit rate:               11 kb/s
+    #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps, 6 kb/s
+
