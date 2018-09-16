@@ -17,7 +17,7 @@ pub trait Tags {
             // Some fixed names, plus tags beginning with an underscore (e.g.,
             // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
             // (e.g., com.apple.quicktime.player.* tags).
-            static ref BORING_PATTERN: Regex = Regex::new(r"^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
+            static ref BORING_PATTERN: Regex = Regex::new(r"(?i)^((major_brand|minor_version|compatible_brands|creation_time|handler_name|encoder)$|_|com\.)").unwrap();
         }
         BORING_PATTERN.is_match(key)
     }
