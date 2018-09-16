@@ -85,7 +85,9 @@ fn get_channel_layout(audio: &Audio) -> (ChannelLayout, String) {
             nb_channels as i32,
             layout.bits(),
         );
-        layout_string = from_utf8_unchecked(&buf).to_string();
+        layout_string = from_utf8_unchecked(&buf)
+            .trim_right_matches(char::from(0))
+            .to_string();
     }
     (layout, layout_string)
 }
