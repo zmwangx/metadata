@@ -1,19 +1,17 @@
-use ffmpeg::codec::decoder::audio::Audio;
-use ffmpeg::codec::decoder::video::Video;
+use ffmpeg;
 use ffmpeg::format::context::Input;
-use ffmpeg::util::channel_layout::ChannelLayout;
-use ffmpeg::util::rational::Rational;
-use ffmpeg::{self, Stream};
+use ffmpeg::media::Type;
 use handlebars::Handlebars;
 use std::fs;
 use std::io;
 use std::path::Path;
-use std::str::from_utf8_unchecked;
 
 use prejudice;
 use scan::{self, ScanType};
 use tags::Tags;
 use util;
+
+use stream::parse_stream_meatadata;
 
 // The width (20) here really should not be hard-coded, but the
 // handlebars_helper! macro does not seem to support inline helpers with
@@ -51,83 +49,6 @@ pub struct MediaFileMetadataOptions {
 //
 // And the use the builder pattern to handle MediaFileMetadataOptions.
 
-// TODO: use None (Option<String>) rather than empty strings.
-
-// Returns the two representations of the stream's frate rate.
-// Could be invalid, with an empty string representation!
-fn get_frame_rate(video: &Video) -> (Rational, String) {
-    let r_frame_rate = video.frame_rate().unwrap();
-    let r_frame_rate_num = r_frame_rate.numerator();
-    let r_frame_rate_den = r_frame_rate.denominator();
-    let frame_rate: String;
-    if r_frame_rate_den == 0 {
-        frame_rate = "".to_string();
-    } else if r_frame_rate_num % r_frame_rate_den == 0 {
-        frame_rate = format!("{} fps", r_frame_rate_num / r_frame_rate_den);
-    } else {
-        frame_rate = format!(
-            "{:.2} fps",
-            r_frame_rate_num as f64 / r_frame_rate_den as f64
-        );
-    }
-    (r_frame_rate, frame_rate)
-}
-
-fn get_channel_layout(audio: &Audio) -> (ChannelLayout, String) {
-    let layout = audio.channel_layout();
-    let layout_string: String;
-    let nb_channels = audio.channels();
-    let mut buf = [0u8; 128];
-    unsafe {
-        ffmpeg::ffi::av_get_channel_layout_string(
-            buf.as_mut_ptr() as *mut i8,
-            128,
-            nb_channels as i32,
-            layout.bits(),
-        );
-        layout_string = from_utf8_unchecked(&buf)
-            .trim_right_matches(char::from(0))
-            .to_string();
-    }
-    (layout, layout_string)
-}
-
-// Returns (((width, height), sar, dar),
-//          (pixel_dimensions_str, sar_str, dar_str)).
-//
-// sar is the sample aspect ratio (aka pixel aspect ratio); dar is the
-// display aspect ratio. The following is satisfied:
-//
-//     width/height * sar = dar
-//
-// width:height is also sometimes called the storage aspect ratio; do
-// not confuse with sar.
-//
-// *_str are string representations.
-fn get_dimensions_and_aspect_radio(
-    video: &Video,
-) -> (((u32, u32), Rational, Rational), (String, String, String)) {
-    let width = video.width();
-    let height = video.height();
-    // If sample_aspect_ratio is not available (i.e., 1:1),
-    // video.aspect_ratio() produces Rational(0, 1), so
-    // apparently we need to correct this.
-    let sar = if video.aspect_ratio().numerator() == 0 {
-        Rational(1, 1)
-    } else {
-        video.aspect_ratio().reduce()
-    };
-    let dar = sar * Rational(width as i32, height as i32);
-    (
-        ((width, height), sar, dar),
-        (
-            format!("{}x{}", width, height),
-            format!("{}:{}", sar.numerator(), sar.denominator()),
-            format!("{}:{}", dar.numerator(), dar.denominator()),
-        ),
-    )
-}
-
 pub fn metadata<P: AsRef<Path>>(
     path: &P,
     options: &MediaFileMetadataOptions,
@@ -152,11 +73,7 @@ pub fn metadata<P: AsRef<Path>>(
     };
     let duration: String =
         duration_seconds.map_or("Not available".to_string(), util::format_seconds);
-    let pixel_dimensions: String;
-    let sample_aspect_ratio: String;
-    let display_aspect_ratio: String;
     let scan_type: Option<ScanType> = scan::get_scan_type(&mut format_ctx, options.decode_frames)?;
-    let frame_rate: String;
     let bit_rate_num: i64 = unsafe { (*format_ctx.as_ptr()).bit_rate };
     let bit_rate: String = if bit_rate_num != 0 {
         format!("{:.0} kb/s", bit_rate_num as f64 / 1000f64)
@@ -168,26 +85,38 @@ pub fn metadata<P: AsRef<Path>>(
     } else {
         "".to_string()
     };
-    match format_ctx.streams().best(ffmpeg::media::Type::Video) {
-        Some(stream) => {
-            let video = stream.codec().decoder().video()?;
-            let dim_sar_dar = get_dimensions_and_aspect_radio(&video).1;
-            pixel_dimensions = dim_sar_dar.0;
-            sample_aspect_ratio = dim_sar_dar.1;
-            display_aspect_ratio = dim_sar_dar.2;
-            frame_rate = get_frame_rate(&video).1;
-        }
-        None => {
-            pixel_dimensions = "".to_string();
-            sample_aspect_ratio = "".to_string();
-            display_aspect_ratio = "".to_string();
-            frame_rate = "".to_string();
-        }
-    };
-    let mut stream_metadata_strings = Vec::new();
+
+    let mut streams_metadata = Vec::new();
     for stream in format_ctx.streams() {
-        stream_metadata_strings.push(stream_metadata(stream)?);
+        streams_metadata.push(parse_stream_meatadata(stream)?);
     }
+    let streams_metadata_rendered = streams_metadata
+        .iter()
+        .enumerate()
+        .map(|(i, m)| {
+            m.render_default()
+                .expect(&format!("failed to render metadata for stream #{}", i))
+        })
+        .collect::<Vec<_>>();
+
+    let best_vstream_index = format_ctx.streams().best(Type::Video).map(|s| s.index());
+    let best_vstream_metadata =
+        best_vstream_index.map(|i| streams_metadata[i].video_metadata().unwrap());
+    let (pixel_dimensions, sample_aspect_ratio, display_aspect_ratio, frame_rate) =
+        if let Some(m) = best_vstream_metadata {
+            (
+                Some(m.pixel_dimensions),
+                Some(m.sample_aspect_ratio),
+                Some(m.display_aspect_ratio),
+                Some(m.frame_rate),
+            )
+        } else {
+            (None, None, None, None)
+        };
+    // let mut stream_metadata_strings = Vec::new();
+    // for stream in format_ctx.streams() {
+    //     stream_metadata_strings.push(stream_metadata(stream)?);
+    // }
     let hash = if options.include_checksum {
         Some(util::sha256_hash(path)?)
     } else {
@@ -255,7 +184,7 @@ pub fn metadata<P: AsRef<Path>>(
                 "scan_type": scan_type,
                 "frame_rate": frame_rate,
                 "bit_rate": bit_rate,
-                "streams": stream_metadata_strings,
+                "streams": streams_metadata_rendered,
 
                 "tags": if options.include_all_tags {
                     Some(format_ctx.metadata().to_tags())
@@ -279,156 +208,4 @@ pub fn metadata<P: AsRef<Path>>(
             }),
         )
         .expect("format template rendering failure"))
-}
-
-// stream_metadata is similar to avcodec_string (libavcodec/utils.c), which is
-// used by ffmpeg/ffprobe's to display stream info.
-// https://ffmpeg.org/doxygen/4.0/group__lavc__misc.html#ga6d4056568b5ab73d2e55800d9a5caa66
-pub fn stream_metadata(stream: Stream) -> io::Result<String> {
-    let stream_index: usize = stream.index();
-    let metadata = stream.metadata();
-    let codec_par = stream.parameters();
-    let codec_ctx = stream.codec();
-    let medium = codec_ctx.medium();
-    let decoder = codec_ctx.decoder();
-    let template: &str;
-    let values;
-    match medium {
-        ffmpeg::media::Type::Video => {
-            let video = decoder.video()?;
-            let codec_desc = prejudice::codec_description(&codec_par);
-            let pixel_fmt = video.format().descriptor().map(|d| d.name());
-            let color_range = video.color_range().name();
-            let color_space = video.color_space().name();
-            let color_primaries = video.color_primaries().name();
-            let color_trc = video.color_transfer_characteristic().name();
-            let color_specs = [color_range.map(|v| v.to_string()), {
-                // https://github.com/FFmpeg/FFmpeg/blob/n4.0.2/libavcodec/utils.c#L1220-L1233
-                if color_space.or(color_primaries).or(color_trc).is_some() {
-                    if color_space == color_primaries && color_space == color_trc {
-                        Some(color_space.unwrap_or("unknown").to_string())
-                    } else {
-                        Some(format!(
-                            "{}/{}/{}",
-                            color_space.unwrap_or("unknown"),
-                            color_primaries.unwrap_or("unknown"),
-                            color_trc.unwrap_or("unknown")
-                        ))
-                    }
-                } else {
-                    None
-                }
-            }].iter()
-                .filter(|v| v.is_some())
-                .map(|v| v.clone().unwrap())
-                .collect::<Vec<_>>()
-                .join(", ");
-            let dim_sar_dar = get_dimensions_and_aspect_radio(&video).1;
-            let frame_rate = get_frame_rate(&video).1;
-            let bit_rate_num = video.bit_rate();
-            let bit_rate = if bit_rate_num != 0 {
-                format!("{:.0} kb/s", bit_rate_num as f64 / 1000f64)
-            } else {
-                "".to_string()
-            };
-            template = "#{{{stream_index}}}: Video\
-                        , {{{codec_desc}}}\
-                        {{#if pixel_fmt}}\
-                        , {{{pixel_fmt}}}{{#if color_specs}} ({{{color_specs}}}){{/if}}\
-                        {{/if}}\
-                        , {{{pixel_dimensions}}} \
-                        (SAR {{{sample_aspect_ratio}}}, DAR {{{display_aspect_ratio}}})\
-                        {{#if frame_rate}}\
-                        , {{{frame_rate}}}\
-                        {{/if}}\
-                        {{#if bit_rate}}\
-                        , {{{bit_rate}}}\
-                        {{/if}}\
-                        ";
-            values = json!({
-                "stream_index": stream_index,
-                "codec_desc": codec_desc,
-                "pixel_fmt": pixel_fmt,
-                "color_specs": color_specs,
-                "pixel_dimensions": dim_sar_dar.0,
-                "sample_aspect_ratio": dim_sar_dar.1,
-                "display_aspect_ratio": dim_sar_dar.2,
-                "frame_rate": frame_rate,
-                "bit_rate": bit_rate,
-            });
-        }
-
-        ffmpeg::media::Type::Audio => {
-            let audio = decoder.audio()?;
-            let language = metadata.get("language").or(metadata.get("LANGUAGE"));
-            let codec_desc = prejudice::codec_description(&codec_par);
-            let sample_rate_num = audio.rate();
-            let sample_rate = format!("{} Hz", sample_rate_num);
-            let (_, channel_layout) = get_channel_layout(&audio);
-            let bit_rate_num = audio.bit_rate();
-            let bit_rate = if bit_rate_num != 0 {
-                format!("{:.0} kb/s", bit_rate_num as f64 / 1000f64)
-            } else {
-                "".to_string()
-            };
-            template = "#{{{stream_index}}}: Audio\
-                        {{#if language}} ({{{language}}}){{/if}}\
-                        , {{{codec_desc}}}\
-                        , {{{sample_rate}}}\
-                        , {{{channel_layout}}}\
-                        {{#if bit_rate}}\
-                        , {{{bit_rate}}}\
-                        {{/if}}\
-                        ";
-            values = json!({
-                "stream_index": stream_index,
-                "language": language,
-                "codec_desc": codec_desc,
-                "sample_rate": sample_rate,
-                "channel_layout": channel_layout,
-                "bit_rate": bit_rate,
-            });
-        }
-
-        ffmpeg::media::Type::Subtitle => {
-            let language = metadata.get("language").or(metadata.get("LANGUAGE"));
-            template = "#{{{stream_index}}}: Subtitle\
-                        {{#if language}} ({{{language}}}){{/if}}\
-                        , {{{codec_desc}}}\
-                        ";
-            let codec_desc = prejudice::codec_description(&codec_par);
-            values = json!({
-                "stream_index": stream_index,
-                "language": language,
-                "codec_desc": codec_desc,
-            });
-        }
-
-        ffmpeg::media::Type::Data => {
-            template = "#{{{stream_index}}}: Data";
-            values = json!({
-                "stream_index": stream_index,
-            });
-        }
-
-        ffmpeg::media::Type::Attachment => {
-            template = "#{{{stream_index}}}: Attachment";
-            values = json!({
-                "stream_index": stream_index,
-            });
-        }
-
-        ffmpeg::media::Type::Unknown => {
-            template = "#{{{stream_index}}}: Unknown";
-            values = json!({
-                "stream_index": stream_index,
-            });
-        }
-    };
-    Ok(Handlebars::new()
-        .render_template(template, &values)
-        .expect(&format!(
-            "stream {} template rendering failure",
-            stream_index
-        )))
 }
