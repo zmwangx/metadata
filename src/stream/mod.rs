@@ -74,16 +74,16 @@ pub fn parse_stream_meatadata(stream: Stream) -> io::Result<StreamMetadata> {
     let index = stream.index();
     let codec_ctx = stream.codec();
     let codec_par = stream.parameters();
-    let metadata = stream.metadata();
+    let tags = stream.metadata();
     Ok(match codec_ctx.medium() {
         Type::Video => {
             StreamMetadata::VideoMetadata(VideoMetadata::new(index, codec_ctx, &codec_par)?)
         }
-        Type::Audio => StreamMetadata::AudioMetadata(AudioMetadata::new(
-            index, codec_ctx, &codec_par, &metadata,
-        )?),
+        Type::Audio => {
+            StreamMetadata::AudioMetadata(AudioMetadata::new(index, codec_ctx, &codec_par, &tags)?)
+        }
         Type::Subtitle => {
-            StreamMetadata::SubtitleMetadata(SubtitleMetadata::new(index, &codec_par, &metadata)?)
+            StreamMetadata::SubtitleMetadata(SubtitleMetadata::new(index, &codec_par, &tags)?)
         }
         Type::Data => StreamMetadata::DataMetadata(DataMetadata { index }),
         Type::Attachment => StreamMetadata::AttachmentMetadata(AttachmentMetadata { index }),

@@ -19,11 +19,11 @@ impl SubtitleMetadata {
     pub fn new(
         index: usize,
         codec_par: &Parameters,
-        metadata: &DictionaryRef,
+        tags: &DictionaryRef,
     ) -> io::Result<SubtitleMetadata> {
-        let language = metadata
+        let language = tags
             .get("language")
-            .or(metadata.get("LANGUAGE"))
+            .or(tags.get("LANGUAGE"))
             .map(str::to_string);
 
         let _codec = codec_par.id();

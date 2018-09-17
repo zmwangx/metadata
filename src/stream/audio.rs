@@ -36,13 +36,13 @@ impl AudioMetadata {
         index: usize,
         codec_ctx: Context,
         codec_par: &Parameters,
-        metadata: &DictionaryRef,
+        tags: &DictionaryRef,
     ) -> io::Result<AudioMetadata> {
         let audio = codec_ctx.decoder().audio()?;
 
-        let language = metadata
+        let language = tags
             .get("language")
-            .or(metadata.get("LANGUAGE"))
+            .or(tags.get("LANGUAGE"))
             .map(str::to_string);
 
         let _codec = codec_par.id();
