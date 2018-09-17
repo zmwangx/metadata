@@ -1,0 +1,88 @@
+METADATA(1)
+===========
+:doctype: manpage
+
+
+NAME
+----
+metadata - media file metadata for human consumption
+
+
+SYNOPSIS
+--------
+*asciidoc* ['OPTIONS'] 'FILE'...
+
+
+DESCRIPTION
+-----------
+The *metadata(1)* command formats and displays metadata of one or more
+input media files.
+
+*metadata(1)* is powered by FFmpeg (libav*).
+
+
+OPTIONS
+-------
+*-A, --all-tags*::
+    Print all metadata tags of the container and all streams,
+    including commonplace tags -- major_brand, minor_version,
+    compatible_brands, handler_name, etc. -- that are mostly
+    predictable.
+
+*-c, --checksum*::
+    Include the SHA-256 checksum(s) of the file(s) in the output.
+    (Slow for large files.)
+
+*-h, --help*::
+    Print help information.
+
+*-s, --scan*::
+    Decode beginning frames to determine scan type.
++
+By default, *metadata(1)* determines video scan type by looking at
+stream-level field order metadata, but sometimes this info is not
+available. In such cases, for performance, progressive scan is assumed
+(in the output, there is a "\*" symbol next to "Progressive scan" to
+indicate this uncertainty). The '--scan' option forces the decoding of
+a moderate number of frames (could be slow, especially when frames are
+large, e.g. in the case of 4K HDR HEVC-encoded content) to see if
+frames are actually progressive or interlaced. Note that '--scan' has
+no effect when the scan type is clear from stream-level field order
+(i.e., when output without '--scan' is "Interlaced scan", or
+"Progressive scan" without a "*").
++
+Justification for the default behavior: (1) Scan type is just one
+property that a user might not even care about (it is easy to
+determine qualitatively and empirically too), so it doesn't make sense
+to spend a disproportionate amount of time on it by default. (2) It is
+my belief that interlaced content is on the decline anyway.
+Increasingly more content is produced and delivered digitally;
+and interlaced TV displays are apparently on their way out.
+
+*-t, --tags*::
+    Print metadata tags of the container and all streams, but omit
+    some "boring" ones.
+
+*-V, --version*::
+    Print version information.
+
+
+BUGS
+----
+Plese send bug reports to <https://github.com/zmwangx/metadata>.
+
+
+AUTHOR
+------
+Zhiming Wang <metadata@zhimingwang.org>
+
+
+SEE ALSO
+--------
+ffprobe(1)
+
+
+COPYING
+-------
+Copyright \(C) 2018 Zhiming Wang. This software is released for free
+under the MIT License as published by by the Open Source Initiative.
