@@ -1,6 +1,7 @@
 use handlebars::{self, Handlebars};
 use serde::Serialize;
 
+use media_file::MediaFileMetadata;
 use stream::{self, StreamMetadata};
 
 pub trait Render: Serialize {
@@ -12,6 +13,74 @@ pub trait Render: Serialize {
 
     fn render_default(&self) -> Result<String, handlebars::TemplateRenderError> {
         self.render(&Self::default_template())
+    }
+}
+
+// The width (20) here really should not be hard-coded, but the
+// handlebars_helper! macro does not seem to support inline helpers with
+// additional arguments (a statement I basically pulled out of my ass).
+handlebars_helper!(padkey: |key: str| format!("{:<20}", &[key, ": "].join("")));
+
+impl Render for MediaFileMetadata {
+    fn render(&self, template: &str) -> Result<String, handlebars::TemplateRenderError> {
+        let mut handlebars = Handlebars::new();
+        handlebars.register_helper("padkey", Box::new(padkey));
+        handlebars.render_template(template, &self)
+    }
+
+    fn default_template() -> String {
+        "\
+         {{#if title}}\
+         Title:                  {{{title}}}\n\
+         {{/if}}\
+         Filename:               {{{file_name}}}\n\
+         File size:              {{{file_size}}} ({{{file_size_base10}}}, {{{file_size_base2}}})\n\
+         {{#if options.include_checksum and hash }}\
+         SHA-256 digest:         {{{hash}}}\n\
+         {{/if}}\
+         Container format:       {{{container_format}}}\n\
+         Duration:               {{#if duration}}{{{duration}}}{{else}}Not available{{/if}}\n\
+         {{#if pixel_dimensions}}\
+         Pixel dimensions:       {{{pixel_dimensions}}}\n\
+         {{/if}}\
+         {{#if sample_aspect_ratio}}\
+         Sample aspect ratio:    {{{sample_aspect_ratio}}}\n\
+         {{/if}}\
+         {{#if display_aspect_ratio}}\
+         Display aspect ratio:   {{{display_aspect_ratio}}}\n\
+         {{/if}}\
+         {{#if scan_type}}\
+         Scan type:              {{{scan_type}}}\n\
+         {{/if}}\
+         {{#if frame_rate}}\
+         Frame rate:             {{{frame_rate}}}\n\
+         {{/if}}\
+         Bit rate:               {{{bit_rate}}}\n\
+         {{#each streams_metadata_rendered as |stream_metadata|}}    {{{stream_metadata}}}\n{{/each}}\
+         \
+         {{#if options.include_all_tags}}\
+           {{#if tags}}\
+             Tags:\n\
+             {{#each tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+           {{/if}}\
+           {{#each streams_tags as |s|}}\
+             {{#if s.tags}}  #{{{s.index}}}\n\
+             {{#each s.tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+             {{/if}}\
+           {{/each}}\
+         {{else}}{{#if options.include_tags}}\
+           {{#if filtered_tags}}\
+             Tags:\n\
+             {{#each filtered_tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+           {{/if}}\
+           {{#each streams_filtered_tags as |s|}}\
+             {{#if s.tags}}  #{{{s.index}}}\n\
+             {{#each s.tags as |kv|}}    {{padkey kv.0}}{{{kv.1}}}\n{{/each}}\
+             {{/if}}\
+           {{/each}}\
+         {{/if}}{{/if}}\
+         "
+            .to_string()
     }
 }
 
@@ -53,8 +122,6 @@ impl Render for stream::VideoMetadata {
             .to_string()
     }
 }
-
-// TODO: render unknown language as und
 
 impl Render for stream::AudioMetadata {
     fn default_template() -> String {

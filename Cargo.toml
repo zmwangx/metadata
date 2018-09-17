@@ -11,13 +11,13 @@ path = "src/lib.rs"
 clap = "2.32.0"
 digest = { version = "0.7.5", features = ["std"] }
 env_logger = "0.5.13"
+# TODO: at release time, fix the commit
 ffmpeg = { git = "https://github.com/zmwangx/rust-ffmpeg" }
 handlebars = "1.0.3"
 lazy_static = "1.1.0"
 log = "0.4.5"
 regex = "1.0.5"
 serde = "1.0.78"
-serde_json = "1.0.27"
 sha2 = "0.7.1"
 serde_derive = "1.0.79"
 

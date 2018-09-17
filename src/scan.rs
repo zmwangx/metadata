@@ -1,10 +1,10 @@
 use ffmpeg;
 use ffmpeg::ffi::AVFieldOrder;
 use ffmpeg::format::context::Input;
-use serde::ser::{Serialize, Serializer};
 use std::fmt;
 use std::io;
 
+#[derive(Clone, Debug)]
 pub enum ScanType {
     Progressive,
     Interlaced,
@@ -16,15 +16,6 @@ impl fmt::Display for ScanType {
             ScanType::Progressive => write!(f, "Progressive scan"),
             ScanType::Interlaced => write!(f, "Interlaced scan"),
         }
-    }
-}
-
-impl Serialize for ScanType {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        serializer.serialize_str(&self.to_string())
     }
 }
 

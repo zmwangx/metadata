@@ -1,10 +1,12 @@
 use ffmpeg::DictionaryRef;
 use regex::Regex;
 
-pub trait Tags {
-    fn to_tags(&self) -> Vec<(String, String)>;
+pub type Tags = Vec<(String, String)>;
 
-    fn to_filtered_tags(&self) -> Vec<(String, String)> {
+pub trait ToTags {
+    fn to_tags(&self) -> Tags;
+
+    fn to_filtered_tags(&self) -> Tags {
         self.to_tags()
             .iter()
             .filter(|(k, _)| !Self::tag_is_boring(&k))
@@ -23,7 +25,7 @@ pub trait Tags {
     }
 }
 
-impl<'a> Tags for DictionaryRef<'a> {
+impl<'a> ToTags for DictionaryRef<'a> {
     fn to_tags(&self) -> Vec<(String, String)> {
         self.iter()
             .map(|(k, v)| (k.to_string(), v.to_string()))

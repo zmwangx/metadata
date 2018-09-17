@@ -1,10 +1,9 @@
 extern crate metadata;
 
 extern crate ffmpeg;
-extern crate serde_json;
 extern crate tempfile;
 
-use metadata::metadata::MediaFileMetadataOptions;
+use metadata::{MediaFileMetadata, Render};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -19,6 +18,7 @@ macro_rules! media_file_tests {
                 $( output_with_checksum: $output_with_checksum:expr, )*
                 $( output_with_tags: $output_with_tags:expr, )*
                 $( output_with_all_tags: $output_with_all_tags:expr, )*
+                $( output_with_frame_decoding: $output_with_frame_decoding:expr, )*
             }
         )*
     ) => {
@@ -34,9 +34,11 @@ macro_rules! media_file_tests {
                 let output_with_checksum: Option<&str> = None;
                 let output_with_tags: Option<&str> = None;
                 // let output_with_all_tags: Option<&str> = None;
+                let output_with_frame_decoding: Option<&str> = None;
                 $( let output_with_checksum = Some(include_str!($output_with_checksum)); )*
                 $( let output_with_tags = Some(include_str!($output_with_tags)); )*
                 $( let output_with_all_tags = Some(include_str!($output_with_all_tags)); )*
+                $( let output_with_frame_decoding = Some(include_str!($output_with_frame_decoding)); )*
 
                 let tmpdir = TempDir::new().unwrap();
                 let input_path = tmpdir.path().join(filename);
@@ -44,44 +46,39 @@ macro_rules! media_file_tests {
                 infile.write_all(input).unwrap();
                 infile.flush().unwrap();
 
-                assert_eq!(output, metadata::metadata::metadata(&input_path, &MediaFileMetadataOptions {
-                    include_checksum: false,
-                    include_tags: false,
-                    include_all_tags: false,
-                    decode_frames: false,
-                }).unwrap() + "\n");
+                let mut meta = MediaFileMetadata::new(&input_path).unwrap();
+                assert_eq!(output, meta.render_default().unwrap() + "\n");
 
                 if let Some(output) = output_with_checksum {
-                    assert_eq!(output, metadata::metadata::metadata(&input_path, &MediaFileMetadataOptions {
-                        include_checksum: true,
-                        include_tags: false,
-                        include_all_tags: false,
-                        decode_frames: false,
-                    }).unwrap() + "\n");
+                    meta.include_checksum(true).unwrap();
+                    assert_eq!(output, meta.render_default().unwrap() + "\n");
+                    meta.include_checksum(false).unwrap();
                 }
 
                 if let Some(output) = output_with_tags {
-                    assert_eq!(output, metadata::metadata::metadata(&input_path, &MediaFileMetadataOptions {
-                        include_checksum: false,
-                        include_tags: true,
-                        include_all_tags: false,
-                        decode_frames: false,
-                    }).unwrap() + "\n");
+                    meta.include_tags(true);
+                    assert_eq!(output, meta.render_default().unwrap() + "\n");
+                    meta.include_tags(false);
                 }
 
                 if let Some(output) = output_with_all_tags {
-                    assert_eq!(output, metadata::metadata::metadata(&input_path, &MediaFileMetadataOptions {
-                        include_checksum: false,
-                        include_tags: true,
-                        include_all_tags: true,
-                        decode_frames: false,
-                    }).unwrap() + "\n");
+                    meta.include_all_tags(true);
+                    assert_eq!(output, meta.render_default().unwrap() + "\n");
+                    meta.include_all_tags(false);
+                    meta.include_tags(false);
+                }
+
+                if let Some(output) = output_with_frame_decoding {
+                    meta.decode_frames(true).unwrap();
+                    assert_eq!(output, meta.render_default().unwrap() + "\n");
+                    meta.decode_frames(false).unwrap();
                 }
             }
         )*
     }
 }
 
+// TODO: test include_checksum, include_tags, and decode_frames
 media_file_tests! {
     _5_1_side_wav: {
         input: "data/_5_1_side_wav/5.1-side.wav",
@@ -191,6 +188,8 @@ media_file_tests! {
         output_with_all_tags: "data/h264_high4_0_mp4/h264_high4.0.mp4.with_all_tags.txt",
     }
 
+    // TODO: Scan type is detected as progressive!
+    // TODO: Add a scan type LIKELY_PROGRESSIVE
     h264_interlaced_mp4: {
         input: "data/h264_interlaced_mp4/h264_interlaced.mp4",
         output: "data/h264_interlaced_mp4/h264_interlaced.mp4.txt",

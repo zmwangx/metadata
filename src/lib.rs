@@ -10,8 +10,6 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 extern crate sha2;
-#[macro_use]
-extern crate serde_json;
 
 #[cfg(test)]
 #[macro_use]
@@ -19,7 +17,7 @@ extern crate quickcheck;
 #[cfg(test)]
 extern crate tempfile;
 
-pub mod metadata;
+pub mod media_file;
 pub mod prejudice;
 pub mod render;
 pub mod scan;
@@ -27,7 +25,11 @@ pub mod stream;
 pub mod tags;
 pub mod util;
 
+pub use media_file::MediaFileMetadata;
+pub use render::Render;
+pub use scan::ScanType;
 pub use stream::{
     AttachmentMetadata, AudioMetadata, DataMetadata, StreamMetadata, SubtitleMetadata,
     UnknownMetadata, VideoMetadata,
 };
+pub use tags::{Tags, ToTags};

@@ -5,7 +5,8 @@ extern crate env_logger;
 extern crate ffmpeg;
 
 use clap::App;
-use metadata::metadata::MediaFileMetadataOptions;
+use metadata::{MediaFileMetadata, Render};
+use std::io;
 use std::path::Path;
 use std::process;
 
@@ -34,12 +35,10 @@ fn run_main() -> bool {
         )
         .get_matches();
     let files = matches.values_of("FILE").unwrap();
-    let options = MediaFileMetadataOptions {
-        include_checksum: matches.is_present("checksum"),
-        include_tags: matches.is_present("tags") || matches.is_present("all-tags"),
-        include_all_tags: matches.is_present("all-tags"),
-        decode_frames: matches.is_present("scan"),
-    };
+    let include_checksum = matches.is_present("checksum");
+    let include_tags = matches.is_present("tags");
+    let include_all_tags = matches.is_present("all-tags");
+    let decode_frames = matches.is_present("scan");
 
     let mut successful = true;
 
@@ -51,14 +50,29 @@ fn run_main() -> bool {
         ffmpeg::ffi::av_log_set_level(ffmpeg::ffi::AV_LOG_FATAL);
     }
 
+    let build_media_file_metadata = |file: &str| -> io::Result<MediaFileMetadata> {
+        let mut meta = MediaFileMetadata::new(&file)?;
+        meta.include_checksum(include_checksum)?
+            .include_tags(include_tags)
+            .include_all_tags(include_all_tags)
+            .decode_frames(decode_frames)?;
+        Ok(meta)
+    };
+
     for file in files {
         if !Path::new(file).is_file() {
             eprintln!("Error: \"{}\" does not exist or is not a file", file);
             successful = false;
             continue;
         }
-        match metadata::metadata::metadata(&file, &options) {
-            Ok(pretty) => println!("{}", pretty),
+        match build_media_file_metadata(&file) {
+            Ok(m) => match m.render_default() {
+                Ok(rendered) => println!("{}", rendered),
+                Err(_) => {
+                    eprintln!("Error: failed to render metadata for \"{}\"", file);
+                    successful = false;
+                }
+            },
             Err(error) => {
                 eprintln!("Error: {}", error);
                 successful = false;
