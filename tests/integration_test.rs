@@ -31,14 +31,14 @@ macro_rules! media_file_tests {
                 let filename = Path::new($input).file_name().unwrap().to_str().unwrap();
                 let input = include_bytes!($input);
                 let output = include_str!($output);
-                let output_with_checksum: Option<&str> = None;
-                let output_with_tags: Option<&str> = None;
-                // let output_with_all_tags: Option<&str> = None;
-                let output_with_frame_decoding: Option<&str> = None;
-                $( let output_with_checksum = Some(include_str!($output_with_checksum)); )*
-                $( let output_with_tags = Some(include_str!($output_with_tags)); )*
-                $( let output_with_all_tags = Some(include_str!($output_with_all_tags)); )*
-                $( let output_with_frame_decoding = Some(include_str!($output_with_frame_decoding)); )*
+                let _output_with_checksum: Option<&str> = None;
+                let _output_with_tags: Option<&str> = None;
+                // let _output_with_all_tags: Option<&str> = None;
+                let _output_with_frame_decoding: Option<&str> = None;
+                $( let _output_with_checksum = Some(include_str!($output_with_checksum)); )*
+                $( let _output_with_tags = Some(include_str!($output_with_tags)); )*
+                $( let _output_with_all_tags = Some(include_str!($output_with_all_tags)); )*
+                $( let _output_with_frame_decoding = Some(include_str!($output_with_frame_decoding)); )*
 
                 let tmpdir = TempDir::new().unwrap();
                 let input_path = tmpdir.path().join(filename);
@@ -49,26 +49,26 @@ macro_rules! media_file_tests {
                 let mut meta = MediaFileMetadata::new(&input_path).unwrap();
                 assert_eq!(output, meta.render_default().unwrap() + "\n");
 
-                if let Some(output) = output_with_checksum {
+                if let Some(output) = _output_with_checksum {
                     meta.include_checksum(true).unwrap();
                     assert_eq!(output, meta.render_default().unwrap() + "\n");
                     meta.include_checksum(false).unwrap();
                 }
 
-                if let Some(output) = output_with_tags {
+                if let Some(output) = _output_with_tags {
                     meta.include_tags(true);
                     assert_eq!(output, meta.render_default().unwrap() + "\n");
                     meta.include_tags(false);
                 }
 
-                if let Some(output) = output_with_all_tags {
+                if let Some(output) = _output_with_all_tags {
                     meta.include_all_tags(true);
                     assert_eq!(output, meta.render_default().unwrap() + "\n");
                     meta.include_all_tags(false);
                     meta.include_tags(false);
                 }
 
-                if let Some(output) = output_with_frame_decoding {
+                if let Some(output) = _output_with_frame_decoding {
                     meta.decode_frames(true).unwrap();
                     assert_eq!(output, meta.render_default().unwrap() + "\n");
                     meta.decode_frames(false).unwrap();
