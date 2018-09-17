@@ -81,6 +81,7 @@ macro_rules! media_file_tests {
         )*
     }
 }
+
 media_file_tests! {
     _5_1_side_wav: {
         input: "data/_5_1_side_wav/5.1-side.wav",

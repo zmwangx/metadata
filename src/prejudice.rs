@@ -72,6 +72,8 @@ pub fn format_name(format: &Input, path: &Path) -> String {
         "subviewer" => "SubViewer",
         // "SubViewer v1 subtitle format"
         "subviewer1" => "SubViewer v1",
+        // "WAV / WAVE (Waveform Audio)"
+        "wav" => "Waveform Audio (WAV)",
         // "WebVTT subtitle"
         "webvtt" => "WebVTT",
         _ => return capitalize(format.description().to_string()),
