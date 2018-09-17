@@ -37,6 +37,17 @@ pub struct UnknownMetadata {
 }
 
 impl StreamMetadata {
+    pub fn index(&self) -> usize {
+        match self {
+            StreamMetadata::VideoMetadata(m) => m.index,
+            StreamMetadata::AudioMetadata(m) => m.index,
+            StreamMetadata::SubtitleMetadata(m) => m.index,
+            StreamMetadata::DataMetadata(m) => m.index,
+            StreamMetadata::AttachmentMetadata(m) => m.index,
+            StreamMetadata::UnknownMetadata(m) => m.index,
+        }
+    }
+
     pub fn video_metadata(&self) -> Option<VideoMetadata> {
         match self {
             StreamMetadata::VideoMetadata(m) => Some(m.clone()),

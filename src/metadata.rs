@@ -92,10 +92,11 @@ pub fn metadata<P: AsRef<Path>>(
     }
     let streams_metadata_rendered = streams_metadata
         .iter()
-        .enumerate()
-        .map(|(i, m)| {
-            m.render_default()
-                .expect(&format!("failed to render metadata for stream #{}", i))
+        .map(|m| {
+            m.render_default().expect(&format!(
+                "failed to render metadata for stream #{}",
+                m.index()
+            ))
         })
         .collect::<Vec<_>>();
 
