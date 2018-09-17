@@ -12,14 +12,10 @@ pub enum ScanType {
 
 impl fmt::Display for ScanType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                ScanType::Progressive => "Progressive scan",
-                ScanType::Interlaced => "Interlaced scan",
-            }
-        )
+        match self {
+            ScanType::Progressive => write!(f, "Progressive scan"),
+            ScanType::Interlaced => write!(f, "Interlaced scan"),
+        }
     }
 }
 
