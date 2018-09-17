@@ -11,7 +11,7 @@ Frame rate:             25 fps
 Bit rate:               19 kb/s
     #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
     #1: Audio (und), AAC (LC), 44100 Hz, mono
-    #2: Subtitle, SubRip
+    #2: Subtitle (und), SubRip
 Tags:
     title:              Example video: H.264 + AAC + SRT in Matroska container
     MINOR_VERSION:      512

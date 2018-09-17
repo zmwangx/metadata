@@ -9,5 +9,5 @@ Scan type:              Progressive scan
 Frame rate:             25 fps
 Bit rate:               12 kb/s
     #0: Video, H.264 (High Profile level 1), yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
-    #1: Subtitle, Advanced SubStation Alpha (ASS)
+    #1: Subtitle (und), Advanced SubStation Alpha (ASS)
 

@@ -3,5 +3,5 @@ File size:              53022 (53.1KB, 51.8KiB)
 Container format:       Waveform Audio (WAV)
 Duration:               00:00:00.10
 Bit rate:               4242 kb/s
-    #0: Audio, PCM signed 16-bit little-endian, 44100 Hz, 5.1, 4234 kb/s
+    #0: Audio (und), PCM signed 16-bit little-endian, 44100 Hz, 5.1, 4234 kb/s
 

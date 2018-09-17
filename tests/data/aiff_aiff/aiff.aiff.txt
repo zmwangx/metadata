@@ -3,5 +3,5 @@ File size:              10294 (10.3KB, 10.1KiB)
 Container format:       Audio Interchange File Format (AIFF)
 Duration:               00:00:00.12
 Bit rate:               709 kb/s
-    #0: Audio, PCM signed 16-bit big-endian, 44100 Hz, 1 channels, 706 kb/s
+    #0: Audio (und), PCM signed 16-bit big-endian, 44100 Hz, 1 channels, 706 kb/s
 

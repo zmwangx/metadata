@@ -3,5 +3,5 @@ File size:              1670 (1.67KB, 1.64KiB)
 Container format:       Raw AC-3
 Duration:               00:00:00.14
 Bit rate:               96 kb/s
-    #0: Audio, Dolby AC-3, 44100 Hz, mono, 96 kb/s
+    #0: Audio (und), Dolby AC-3, 44100 Hz, mono, 96 kb/s
 

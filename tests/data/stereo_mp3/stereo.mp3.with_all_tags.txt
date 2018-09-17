@@ -3,7 +3,7 @@ File size:              2342 (2.35KB, 2.29KiB)
 Container format:       MP3
 Duration:               00:00:00.13
 Bit rate:               143 kb/s
-    #0: Audio, MP3, 44100 Hz, stereo, 128 kb/s
+    #0: Audio (und), MP3, 44100 Hz, stereo, 128 kb/s
 Tags:
     encoder:            Lavf57.83.100
   #0

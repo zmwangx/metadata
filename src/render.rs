@@ -58,8 +58,8 @@ impl Render for stream::VideoMetadata {
 
 impl Render for stream::AudioMetadata {
     fn default_template() -> String {
-        "#{{{index}}}: Audio\
-         {{#if language}} ({{{language}}}){{/if}}\
+        "#{{{index}}}: Audio \
+         ({{#if language}}{{{language}}}{{else}}und{{/if}})\
          , {{{codec_desc}}}\
          , {{{sample_rate}}}\
          , {{{channel_layout}}}\
@@ -73,8 +73,8 @@ impl Render for stream::AudioMetadata {
 
 impl Render for stream::SubtitleMetadata {
     fn default_template() -> String {
-        "#{{{index}}}: Subtitle\
-         {{#if language}} ({{{language}}}){{/if}}\
+        "#{{{index}}}: Subtitle \
+         ({{#if language}}{{{language}}}{{else}}und{{/if}})\
          , {{{codec_desc}}}\
          "
             .to_string()
