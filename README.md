@@ -100,6 +100,13 @@ $ make release
 
 You should find `metadata` and `metadata.1` in `dist/<version>/`.
 
+On macOS, `metadata` can be installed with Homebrew:
+
+```console
+$ brew tap zmwangx/metadata https://github.com/zmwangx/metadata
+$ brew install zmwangx/metadata/metadata
+```
+
 ## Usage
 
 ```console
