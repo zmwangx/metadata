@@ -2,6 +2,14 @@
 name = "metadata"
 version = "0.1.0"
 authors = ["Zhiming Wang <i@zhimingwang.org>"]
+description = "Media file metadata for human consumption"
+documentation = "https://docs.rs/metadata"
+homepage = "https://github.com/zmwangx/metadata#readme"
+repository = "https://github.com/zmwangx/metadata"
+readme = "README.md"
+keywords = ["ffmpeg", "multimedia", "video", "audio"]
+categories = ["command-line-utilities", "multimedia"]
+license = "MIT"
 
 [lib]
 name = "metadata"
