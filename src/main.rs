@@ -28,8 +28,8 @@ fn run_main() -> bool {
             "-c, --checksum     'Include file checksum(s)'
             -t, --tags          'Print metadata tags, except mundane ones'
             -A, --all-tags      'Print all metadata tags'
-            --scan              'Decode frames to determine scan type \
-                                 (slower, but may determine interlaced more accurately; \
+            -s, --scan          'Decode frames to determine scan type \
+                                 (slower, but determines interlaced more accurately; \
                                   see man page for details)'
             <FILE>...           'Media file(s)'",
         )
