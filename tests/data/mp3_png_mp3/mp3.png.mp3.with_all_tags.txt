@@ -5,7 +5,7 @@ Duration:               00:00:00.18
 Pixel dimensions:       100x100
 Sample aspect ratio:    1:1
 Display aspect ratio:   1:1
-Scan type:              Progressive scan
+Scan type:              Progressive scan*
 Bit rate:               79 kb/s
     #0: Audio (und), MP3, 44100 Hz, mono, 64 kb/s
     #1: Video, PNG, monob (pc), 100x100 (SAR 1:1, DAR 1:1)

@@ -7,6 +7,7 @@ use std::io;
 #[derive(Clone, Debug)]
 pub enum ScanType {
     Progressive,
+    LikelyProgressive,
     Interlaced,
 }
 
@@ -14,6 +15,7 @@ impl fmt::Display for ScanType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ScanType::Progressive => write!(f, "Progressive scan"),
+            ScanType::LikelyProgressive => write!(f, "Progressive scan*"),
             ScanType::Interlaced => write!(f, "Interlaced scan"),
         }
     }
@@ -36,8 +38,9 @@ pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Optio
     let field_order = unsafe { (*decoder.as_ptr()).field_order };
     debug!("stream #{} field order: {:?}", stream_index, field_order);
     match field_order {
-        AVFieldOrder::AV_FIELD_UNKNOWN | AVFieldOrder::AV_FIELD_PROGRESSIVE => if !decode_frames {
-            return Ok(Some(ScanType::Progressive));
+        AVFieldOrder::AV_FIELD_PROGRESSIVE => return Ok(Some(ScanType::Progressive)),
+        AVFieldOrder::AV_FIELD_UNKNOWN => if !decode_frames {
+            return Ok(Some(ScanType::LikelyProgressive));
         },
         AVFieldOrder::AV_FIELD_TT
         | AVFieldOrder::AV_FIELD_BB
