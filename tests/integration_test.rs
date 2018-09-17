@@ -78,11 +78,11 @@ macro_rules! media_file_tests {
     }
 }
 
-// TODO: test include_checksum, include_tags, and decode_frames
 media_file_tests! {
     _5_1_side_wav: {
         input: "data/_5_1_side_wav/5.1-side.wav",
         output: "data/_5_1_side_wav/5.1-side.wav.txt",
+        output_with_checksum: "data/_5_1_side_wav/5.1-side.wav.with_checksum.txt",
         output_with_all_tags: "data/_5_1_side_wav/5.1-side.wav.with_all_tags.txt",
     }
 
@@ -143,6 +143,7 @@ media_file_tests! {
     h264_aac_srt_mkv: {
         input: "data/h264_aac_srt_mkv/h264.aac.srt.mkv",
         output: "data/h264_aac_srt_mkv/h264.aac.srt.mkv.txt",
+        output_with_tags: "data/h264_aac_srt_mkv/h264.aac.srt.mkv.with_tags.txt",
         output_with_all_tags: "data/h264_aac_srt_mkv/h264.aac.srt.mkv.with_all_tags.txt",
     }
 
@@ -188,12 +189,11 @@ media_file_tests! {
         output_with_all_tags: "data/h264_high4_0_mp4/h264_high4.0.mp4.with_all_tags.txt",
     }
 
-    // TODO: Scan type is detected as progressive!
-    // TODO: Add a scan type LIKELY_PROGRESSIVE
     h264_interlaced_mp4: {
         input: "data/h264_interlaced_mp4/h264_interlaced.mp4",
         output: "data/h264_interlaced_mp4/h264_interlaced.mp4.txt",
         output_with_all_tags: "data/h264_interlaced_mp4/h264_interlaced.mp4.with_all_tags.txt",
+        output_with_frame_decoding: "data/h264_interlaced_mp4/h264_interlaced.mp4.with_frame_decoding.txt",
     }
 
     hevc_mp4: {

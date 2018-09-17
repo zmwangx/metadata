@@ -1,0 +1,8 @@
+Filename:               5.1-side.wav
+File size:              53022 (53.1KB, 51.8KiB)
+SHA-256 digest:         d03080583e9658c06f2999f7b440cbbec236ce0793c3f8f1afc9b87aea297985
+Container format:       Waveform Audio (WAV)
+Duration:               00:00:00.10
+Bit rate:               4242 kb/s
+    #0: Audio (und), PCM signed 16-bit little-endian, 44100 Hz, 5.1(side), 4234 kb/s
+
