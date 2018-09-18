@@ -86,7 +86,8 @@ impl VideoMetadata {
             } else {
                 None
             }
-        }].iter()
+        }]
+            .iter()
             .filter(|v| v.is_some())
             .map(|v| v.clone().unwrap())
             .collect::<Vec<_>>()

@@ -5,7 +5,7 @@
 
 use ffmpeg;
 use ffmpeg::codec::parameters::Parameters;
-use ffmpeg::codec::profile::{H264, Profile, VP9, AAC, HEVC};
+use ffmpeg::codec::profile::{Profile, AAC, H264, HEVC, VP9};
 use ffmpeg::codec::Id;
 use ffmpeg::format::Input;
 use std::ffi::CStr;
