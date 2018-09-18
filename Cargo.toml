@@ -1,6 +1,6 @@
 [package]
 name = "metadata"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Zhiming Wang <i@zhimingwang.org>"]
 description = "Media file metadata for human consumption"
 documentation = "https://docs.rs/metadata"
