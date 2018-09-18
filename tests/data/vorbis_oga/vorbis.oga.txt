@@ -3,5 +3,6 @@ File size:              3393 (3.40KB, 3.32KiB)
 Container format:       Ogg
 Duration:               00:00:00.12
 Bit rate:               234 kb/s
+Streams:
     #0: Audio (und), Vorbis, 44100 Hz, mono, 80 kb/s
 

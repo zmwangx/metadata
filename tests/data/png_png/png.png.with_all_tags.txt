@@ -7,5 +7,6 @@ Sample aspect ratio:    1:1
 Display aspect ratio:   1:1
 Scan type:              Progressive scan*
 Bit rate:               
+Streams:
     #0: Video, PNG, monob (pc), 100x100 (SAR 1:1, DAR 1:1)
 

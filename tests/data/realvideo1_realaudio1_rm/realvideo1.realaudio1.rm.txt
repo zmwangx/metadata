@@ -8,6 +8,7 @@ Display aspect ratio:   16:9
 Scan type:              Progressive scan*
 Frame rate:             25 fps
 Bit rate:               30 kb/s
+Streams:
     #0: Video, RealVideo 1.0, yuv420p, 256x144 (SAR 1:1, DAR 16:9), 25 fps, 200 kb/s
     #1: Audio (und), RealAudio 1.0, 8000 Hz, mono, 8 kb/s
 

@@ -57,6 +57,7 @@ Display aspect ratio:   12:5
 Scan type:              Progressive scan*
 Frame rate:             29.97 fps
 Bit rate:               7631 kb/s
+Streams:
     #0: Video, H.264 (High Profile level 4), yuv420p, 1920x800 (SAR 1:1, DAR 12:5), 29.97 fps, 7500 kb/s
     #1: Audio (und), AAC (LC), 48000 Hz, stereo, 125 kb/s
     #2: Subtitle (eng), EIA-608 closed captions

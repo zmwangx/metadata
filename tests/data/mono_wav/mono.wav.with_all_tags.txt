@@ -3,6 +3,7 @@ File size:              8898 (8.90KB, 8.69KiB)
 Container format:       Waveform Audio (WAV)
 Duration:               00:00:00.10
 Bit rate:               712 kb/s
+Streams:
     #0: Audio (und), PCM signed 16-bit little-endian, 44100 Hz, 1 channels, 706 kb/s
 Tags:
     encoder:            Lavf57.83.100

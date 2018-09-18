@@ -56,6 +56,7 @@ impl Render for MediaFileMetadata {
          Frame rate:             {{{frame_rate}}}\n\
          {{/if}}\
          Bit rate:               {{{bit_rate}}}\n\
+         Streams:\n\
          {{#each streams_metadata_rendered as |stream_metadata|}}    {{{stream_metadata}}}\n{{/each}}\
          \
          {{#if options.include_all_tags}}\

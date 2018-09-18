@@ -8,5 +8,6 @@ Display aspect ratio:   16:9
 Scan type:              Progressive scan
 Frame rate:             25 fps
 Bit rate:               13 kb/s
+Streams:
     #0: Video, HEVC (Main Profile level 1), yuv420p (tv), 128x72 (SAR 1:1, DAR 16:9), 25 fps, 4 kb/s
 
