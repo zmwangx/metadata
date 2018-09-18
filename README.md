@@ -1,13 +1,17 @@
 # metadata
 
+[![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://api.github.com/repos/zmwangx/metadata/tags&label=homebrew&query=$[0].name&colorB=orange&maxAge=1800)](#homebrew)
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
 - [History](#history)
 - [Installation](#installation)
+  - [Homebrew](#homebrew)
 - [Usage](#usage)
 - [Performance](#performance)
+- [Bugs](#bugs)
 - [Copyright](#copyright)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -100,6 +104,8 @@ $ make release
 ```
 
 You should find `metadata` and `metadata.1` in `dist/<version>/`.
+
+### Homebrew
 
 On macOS, `metadata` can be installed with Homebrew:
 
