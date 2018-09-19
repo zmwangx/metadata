@@ -28,7 +28,16 @@ pub trait ToTags {
 impl<'a> ToTags for DictionaryRef<'a> {
     fn to_tags(&self) -> Vec<(String, String)> {
         self.iter()
-            .map(|(k, v)| (k.to_string(), v.to_string()))
-            .collect()
+            // Filter out empty tags.
+            // With FFmpeg 3.4.4, empty tags could be exposed, but this was
+            // fixed in 4.0. We filter out empty tags for consistency.
+            // Example: tests/data/realvideo1_realaudio1_rm/realvideo1.realaudio1.rm
+            .filter_map(|(k, v)| {
+                if v.is_empty() {
+                    None
+                } else {
+                    Some((k.to_string(), v.to_string()))
+                }
+            }).collect()
     }
 }
