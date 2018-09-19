@@ -1,4 +1,4 @@
-.PHONY: default release test man
+.PHONY: default release test man clean
 
 default: man
 	cargo fmt && cargo build
@@ -18,3 +18,6 @@ man: man/metadata.1
 
 man/metadata.1: man/metadata.1.adoc
 	a2x --doctype manpage --format manpage $^
+
+clean:
+	cargo clean
