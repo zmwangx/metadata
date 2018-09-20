@@ -303,7 +303,7 @@ dependencies = [
 
 [[package]]
 name = "metadata"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "digest 0.7.5 (registry+https://github.com/rust-lang/crates.io-index)",

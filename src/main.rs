@@ -21,7 +21,7 @@ fn run_main() -> bool {
     env_logger::init();
 
     let matches = App::new("metadata")
-        .version("0.1.1")
+        .version("0.1.2")
         .author("Zhiming Wang <metadata@zhimingwang.org>")
         .about("Media file metadata for human consumption.")
         .args_from_usage(
