@@ -97,13 +97,24 @@ Since this is my intro to Rust project, *the code is guaranteed to be shitty*.
 
 ## Installation
 
-**FFmpeg and the Rust toolchain are required.** The currently supported FFmpeg version is FFmpeg 4.0.x. Since `metadata` links to `libav*`, which themselves are a beast to compile and come with complicated licensing and distribution restrictions (see `--enable-gpl`, `--enable-nonfree`, etc.), it is inconvenient for me to compile and distribute static binaries.
+**FFmpeg and the Rust toolchain are required.** Currently supported FFmpeg version:
+
+- 4.0.x (tested: 4.0.2);
+- 3.4.x (tested: 3.4.4).
+
+3.2.x is known to *not* work (tested 3.2.12 on Debian Stretch).
+
+Since `metadata` links to `libav*`, which themselves are a beast to compile and come with complicated licensing and distribution restrictions (see `--enable-gpl`, `--enable-nonfree`, etc.), it is inconvenient for me to compile and distribute static binaries. Please compile from source.
+
+The basic build command to run once you have the dependencies is
 
 ```console
 $ make release
 ```
 
 You should find `metadata` and `metadata.1` in `dist/<version>/`.
+
+OS/distro-specific instructions can be found below.
 
 ### Homebrew
 
@@ -113,6 +124,16 @@ On macOS, `metadata` can be installed with Homebrew:
 $ brew tap zmwangx/metadata https://github.com/zmwangx/metadata
 $ brew install zmwangx/metadata/metadata
 ```
+
+### Debian/Ubuntu
+
+On Debian/Ubuntu, the following dependencies need to be satisfied (in addition to the Rust toolchain):
+
+```console
+$ apt install -y build-essential clang libavcodec-dev libavdevice-dev libavformat-dev libavfilter-dev pkg-config
+```
+
+Note that FFmpeg 3.4.x on Ubuntu 18.04 LTS (bionic) and forward are supported; older FFmpeg from 16.04 LTS (xenial) and prior releases are not. FFmpeg 3.2.x on Debian Stretch is not supported. You may use the [jonathonf/ffmpeg-4](https://launchpad.net/~jonathonf/+archive/ubuntu/ffmpeg-4) PPA, which supports trusty, xenial, and bionic.
 
 ## Usage
 
