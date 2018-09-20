@@ -1,4 +1,4 @@
-extern crate ffmpeg;
+extern crate ffmpeg_next as ffmpeg;
 #[macro_use]
 extern crate handlebars;
 #[macro_use]

@@ -1,6 +1,6 @@
 extern crate metadata;
 
-extern crate ffmpeg;
+extern crate ffmpeg_next as ffmpeg;
 extern crate tempfile;
 
 use metadata::{MediaFileMetadata, Render};

@@ -2,7 +2,7 @@ extern crate metadata;
 
 extern crate clap;
 extern crate env_logger;
-extern crate ffmpeg;
+extern crate ffmpeg_next as ffmpeg;
 
 use clap::App;
 use metadata::{MediaFileMetadata, Render};

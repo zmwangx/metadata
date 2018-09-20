@@ -27,8 +27,8 @@ serde = "1.0.78"
 sha2 = "0.7.1"
 serde_derive = "1.0.79"
 
-[dependencies.ffmpeg]
-git = "https://github.com/zmwangx/rust-ffmpeg"
+[dependencies.ffmpeg-next]
+version = "0.2.0"
 default-features = false
 features = ["codec", "format"]
 
@@ -38,4 +38,4 @@ tempfile = "3.0.3"
 
 [features]
 default = ["ffmpeg4"]
-ffmpeg4 = ["ffmpeg/ffmpeg4"]
+ffmpeg4 = ["ffmpeg-next/ffmpeg4"]
