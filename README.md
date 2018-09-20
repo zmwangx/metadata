@@ -10,6 +10,7 @@
 - [History](#history)
 - [Installation](#installation)
   - [Homebrew](#homebrew)
+  - [Debian/Ubuntu](#debianubuntu)
 - [Usage](#usage)
 - [Performance](#performance)
 - [Bugs](#bugs)
