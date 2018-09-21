@@ -1,0 +1,19 @@
+image: ubuntu1804
+
+environment:
+  matrix:
+    - FFMPEG_VERSION: 3.4
+    - FFMPEG_VERSION: 4.0
+
+install:
+- sh: if [[ $FFMPEG_VERSION == 4.0 ]]; then sudo add-apt-repository -y ppa:jonathonf/ffmpeg-4; fi
+- sh: sudo apt update -qq
+- sh: sudo apt install -qq -y build-essential clang ffmpeg libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavresample-dev libavutil-dev libswscale-dev libswresample-dev pkg-config
+- sh: curl -sSf -o rustup.sh https://sh.rustup.rs
+- sh: chmod +x rustup.sh && ./rustup.sh -y
+- sh: PATH=$HOME/.cargo/bin:$PATH
+- sh: ffmpeg -version
+- sh: ffmpeg -version | grep -q "ffmpeg version $FFMPEG_VERSION"
+
+build_script:
+- sh: make release
