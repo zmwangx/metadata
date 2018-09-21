@@ -132,7 +132,7 @@ $ brew install zmwangx/metadata/metadata
 On Debian/Ubuntu, the following dependencies need to be satisfied (in addition to the Rust toolchain):
 
 ```console
-$ apt install -y build-essential clang libavcodec-dev libavdevice-dev libavformat-dev libavfilter-dev pkg-config
+$ apt install -y build-essential clang libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavresample-dev libavutil-dev libswscale-dev libswresample-dev pkg-config
 ```
 
 Note that FFmpeg 3.4.x on Ubuntu 18.04 LTS (bionic) and forward are supported; older FFmpeg from 16.04 LTS (xenial) and prior releases are not. FFmpeg 3.2.x on Debian Stretch is not supported. You may use the [jonathonf/ffmpeg-4](https://launchpad.net/~jonathonf/+archive/ubuntu/ffmpeg-4) PPA, which supports trusty, xenial, and bionic.
