@@ -28,7 +28,7 @@ sha2 = "0.7.1"
 serde_derive = "1.0.79"
 
 [dependencies.ffmpeg-next]
-version = "0.2.0"
+version = "4.2"
 default-features = false
 features = ["codec", "format"]
 
@@ -37,5 +37,7 @@ quickcheck = "0.7.1"
 tempfile = "3.0.3"
 
 [features]
-default = ["ffmpeg4"]
+default = ["ffmpeg42"]
+ffmpeg42 = ["ffmpeg-next/ffmpeg42"]
+ffmpeg41 = ["ffmpeg-next/ffmpeg41"]
 ffmpeg4 = ["ffmpeg-next/ffmpeg4"]

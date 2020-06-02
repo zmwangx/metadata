@@ -1,11 +1,26 @@
-LAVC_VERSION=$(shell pkg-config --modversion libavcodec)
-$(info detected lavc $(LAVC_VERSION))
-LAVC_MAJOR_VERSION := $(firstword $(subst ., ,$(LAVC_VERSION)))
-ifeq ($(LAVC_MAJOR_VERSION),)
-$(error cannot determine libavcodec version with pkg-config)
-else ifeq ($(shell test $(LAVC_MAJOR_VERSION) -lt 58; echo $$?),0)
-# Disable feature ffmpeg4
+LIBAVCODEC_VERSION=$(shell pkg-config --modversion libavcodec)
+$(info detected lavc $(LIBAVCODEC_VERSION))
+LIBAVCODEC_VERSION_MAJOR := $(word 1,$(subst ., ,$(LIBAVCODEC_VERSION)))
+LIBAVCODEC_VERSION_MINOR := $(word 2,$(subst ., ,$(LIBAVCODEC_VERSION)))
+ifeq ($(LIBAVCODEC_VERSION_MAJOR),)
+  $(error cannot determine libavcodec version with pkg-config)
+else ifeq ($(shell test $(LIBAVCODEC_VERSION_MAJOR) -gt 58; echo $$?),0)
+  $(warning unknown libavcodec version, possibly from FFmpeg >4; use at own risk)
+  FEATURES += ffmpeg42
+else ifeq ($(LIBAVCODEC_VERSION_MAJOR),58)
+  ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 54; echo $$?),0)
+    FEATURES += ffmpeg42
+  else ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 35; echo $$?),0)
+    FEATURES += ffmpeg41
+  else
+    FEATURES += ffmpeg4
+  endif
+endif
+
 CARGO_BUILD_FLAGS += --no-default-features
+ifneq ($(FEATURES),)
+  $(info enabled features: $(FEATURES))
+  CARGO_BUILD_FLAGS += --features "$(FEATURES)"
 endif
 
 .PHONY: default release test man clean
