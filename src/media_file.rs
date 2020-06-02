@@ -137,7 +137,8 @@ impl MediaFileMetadata {
                     "failed to render metadata for stream #{}",
                     m.index()
                 ))
-            }).collect::<Vec<_>>();
+            })
+            .collect::<Vec<_>>();
 
         let best_vstream_index = format_ctx.streams().best(Type::Video).map(|s| s.index());
         let best_vstream_metadata =
@@ -182,13 +183,15 @@ impl MediaFileMetadata {
             .map(|s| StreamTags {
                 index: s.index(),
                 tags: s.metadata().to_tags(),
-            }).collect();
+            })
+            .collect();
         let streams_filtered_tags = format_ctx
             .streams()
             .map(|s| StreamTags {
                 index: s.index(),
                 tags: s.metadata().to_filtered_tags(),
-            }).collect();
+            })
+            .collect();
 
         Ok(MediaFileMetadata {
             options: MediaFileMetadataOptions {

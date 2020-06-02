@@ -15,7 +15,7 @@ pub trait ToTags {
     }
 
     fn tag_is_boring(key: &str) -> bool {
-        lazy_static!{
+        lazy_static! {
             // Some fixed names, plus tags beginning with an underscore (e.g.,
             // _STATISTICS_* tags by mkvmerge), or in reversed domain name notation
             // (e.g., com.apple.quicktime.player.* tags).
@@ -38,6 +38,7 @@ impl<'a> ToTags for DictionaryRef<'a> {
                 } else {
                     Some((k.to_string(), v.to_string()))
                 }
-            }).collect()
+            })
+            .collect()
     }
 }

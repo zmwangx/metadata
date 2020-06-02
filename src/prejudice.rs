@@ -77,7 +77,8 @@ pub fn format_name(format: &Input, path: &Path) -> String {
         // "WebVTT subtitle"
         "webvtt" => "WebVTT",
         _ => return capitalize(format.description().to_string()),
-    }.to_string()
+    }
+    .to_string()
 }
 
 pub fn codec_name(codec_id: Id) -> String {
@@ -141,7 +142,8 @@ pub fn codec_name(codec_id: Id) -> String {
         "webvtt" => "WebVTT",
 
         _ => return capitalize(long_name.to_string()),
-    }.to_string()
+    }
+    .to_string()
 }
 
 pub fn codec_description(codec_par: &Parameters) -> String {

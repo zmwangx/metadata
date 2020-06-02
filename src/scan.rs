@@ -39,9 +39,11 @@ pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Optio
     debug!("stream #{} field order: {:?}", stream_index, field_order);
     match field_order {
         AVFieldOrder::AV_FIELD_PROGRESSIVE => return Ok(Some(ScanType::Progressive)),
-        AVFieldOrder::AV_FIELD_UNKNOWN => if !decode_frames {
-            return Ok(Some(ScanType::LikelyProgressive));
-        },
+        AVFieldOrder::AV_FIELD_UNKNOWN => {
+            if !decode_frames {
+                return Ok(Some(ScanType::LikelyProgressive));
+            }
+        }
         AVFieldOrder::AV_FIELD_TT
         | AVFieldOrder::AV_FIELD_BB
         | AVFieldOrder::AV_FIELD_TB

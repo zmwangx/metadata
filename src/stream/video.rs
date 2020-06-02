@@ -87,11 +87,11 @@ impl VideoMetadata {
                 None
             }
         }]
-            .iter()
-            .filter(|v| v.is_some())
-            .map(|v| v.clone().unwrap())
-            .collect::<Vec<_>>()
-            .join(", ");
+        .iter()
+        .filter(|v| v.is_some())
+        .map(|v| v.clone().unwrap())
+        .collect::<Vec<_>>()
+        .join(", ");
 
         // sar is the sample aspect ratio (aka pixel aspect ratio); dar is the
         // display aspect ratio. The following is satisfied:

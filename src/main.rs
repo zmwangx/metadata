@@ -32,7 +32,8 @@ fn run_main() -> bool {
                                  (slower, but determines interlaced more accurately; \
                                   see man page for details)'
             <FILE>...           'Media file(s)'",
-        ).get_matches();
+        )
+        .get_matches();
     let files = matches.values_of("FILE").unwrap();
     let include_checksum = matches.is_present("checksum");
     let include_tags = matches.is_present("tags");

@@ -119,7 +119,8 @@ impl Render for stream::VideoMetadata {
          {{#if bit_rate}}\
          , {{{bit_rate}}}\
          {{/if}}\
-         ".to_string()
+         "
+        .to_string()
     }
 }
 
@@ -133,7 +134,8 @@ impl Render for stream::AudioMetadata {
          {{#if bit_rate}}\
          , {{{bit_rate}}}\
          {{/if}}\
-         ".to_string()
+         "
+        .to_string()
     }
 }
 
@@ -142,7 +144,8 @@ impl Render for stream::SubtitleMetadata {
         "#{{{index}}}: Subtitle \
          ({{#if language}}{{{language}}}{{else}}und{{/if}})\
          , {{{codec_desc}}}\
-         ".to_string()
+         "
+        .to_string()
     }
 }
 
