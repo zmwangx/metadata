@@ -53,7 +53,9 @@ pub fn format_seconds(secs: f64) -> String {
 
 pub fn sha256_hash(path: &Path) -> io::Result<String> {
     let mut file = fs::File::open(path)?;
-    let hash = Sha256::digest_reader(&mut file)?;
+    let mut hasher = Sha256::new();
+    io::copy(&mut file, &mut hasher)?;
+    let hash = hasher.result();
     Ok(format!("{:x}", hash))
 }
 

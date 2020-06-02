@@ -17,14 +17,14 @@ path = "src/lib.rs"
 
 [dependencies]
 clap = "2.32.0"
-digest = { version = "0.7.5", features = ["std"] }
-env_logger = "0.5.13"
-handlebars = "1.0.3"
+digest = { version = "0.8.1", features = ["std"] }
+env_logger = "0.7.1"
+handlebars = "3.1.0"
 lazy_static = "1.1.0"
 log = "0.4.5"
 regex = "1.0.5"
 serde = "1.0.78"
-sha2 = "0.7.1"
+sha2 = "0.8.2"
 serde_derive = "1.0.79"
 
 [dependencies.ffmpeg-next]
@@ -33,7 +33,7 @@ default-features = false
 features = ["codec", "format"]
 
 [dev-dependencies]
-quickcheck = "0.7.1"
+quickcheck = "0.8.2"
 tempfile = "3.0.3"
 
 [features]
