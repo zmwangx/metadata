@@ -86,7 +86,7 @@ impl AudioMetadata {
                 layout.bits(),
             );
             layout_string = from_utf8_unchecked(&buf)
-                .trim_right_matches(char::from(0))
+                .trim_end_matches(char::from(0))
                 .to_string();
         }
         (layout, layout_string)

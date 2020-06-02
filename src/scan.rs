@@ -51,7 +51,7 @@ pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Optio
     }
     let mut decoded = ffmpeg::frame::Video::empty();
     let mut frame_count: usize = 0;
-    for (stream, mut packet) in input.packets() {
+    for (stream, packet) in input.packets() {
         if stream.index() == stream_index {
             frame_count += 1;
             debug!("decoding frame {}", frame_count);
