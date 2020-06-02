@@ -11,10 +11,10 @@ Bit rate:               16 kb/s
 Streams:
     #0: Video, Theora, yuv420p, 128x72 (SAR 1:1, DAR 16:9), 25 fps
   #0
-    LANGUAGE:           und
-    HANDLER_NAME:       VideoHandler
-    ENCODER:            Lavc56.26.100 libtheora
-    MAJOR_BRAND:        isom
-    MINOR_VERSION:      512
-    COMPATIBLE_BRANDS:  isomiso2avc1mp41
+    language:           und
+    handler_name:       VideoHandler
+    encoder:            Lavc56.26.100 libtheora
+    major_brand:        isom
+    minor_version:      512
+    compatible_brands:  isomiso2avc1mp41
 

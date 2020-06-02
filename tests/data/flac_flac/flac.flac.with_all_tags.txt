@@ -6,5 +6,5 @@ Bit rate:               573 kb/s
 Streams:
     #0: Audio (und), FLAC, 44100 Hz, mono
 Tags:
-    ENCODER:            Lavf56.25.101
+    encoder:            Lavf56.25.101
 

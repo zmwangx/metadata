@@ -9,6 +9,8 @@ use std::io::Write;
 use std::path::Path;
 use tempfile::TempDir;
 
+const LATEST_LAVC_VERSION: u32 = 3815012; // LIBAVCODEC_VERSION_INT for lavc 58.54.100 (FFmpeg 4.2)
+
 macro_rules! media_file_tests {
     (
         $(
@@ -55,17 +57,19 @@ macro_rules! media_file_tests {
                     meta.include_checksum(false).unwrap();
                 }
 
-                if let Some(output) = _output_with_tags {
-                    meta.include_tags(true);
-                    assert_eq!(output, meta.render_default().unwrap() + "\n");
-                    meta.include_tags(false);
-                }
+                if ffmpeg::codec::version() == LATEST_LAVC_VERSION {
+                    if let Some(output) = _output_with_tags {
+                        meta.include_tags(true);
+                        assert_eq!(output, meta.render_default().unwrap() + "\n");
+                        meta.include_tags(false);
+                    }
 
-                if let Some(output) = _output_with_all_tags {
-                    meta.include_all_tags(true);
-                    assert_eq!(output, meta.render_default().unwrap() + "\n");
-                    meta.include_all_tags(false);
-                    meta.include_tags(false);
+                    if let Some(output) = _output_with_all_tags {
+                        meta.include_all_tags(true);
+                        assert_eq!(output, meta.render_default().unwrap() + "\n");
+                        meta.include_all_tags(false);
+                        meta.include_tags(false);
+                    }
                 }
 
                 if let Some(output) = _output_with_frame_decoding {

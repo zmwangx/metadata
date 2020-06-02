@@ -17,5 +17,5 @@ Tags:
     encoder:            Lavf56.25.101
   #0
     language:           eng
-    handler_name:       DataHandler
+    handler_name:       VideoHandler
 
