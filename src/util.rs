@@ -55,7 +55,7 @@ pub fn sha256_hash(path: &Path) -> io::Result<String> {
     let mut file = fs::File::open(path)?;
     let mut hasher = Sha256::new();
     io::copy(&mut file, &mut hasher)?;
-    let hash = hasher.result();
+    let hash = hasher.finalize();
     Ok(format!("{:x}", hash))
 }
 
