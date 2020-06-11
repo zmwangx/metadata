@@ -1,0 +1,55 @@
+name: test
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  test:
+    name: Test on ${{ matrix.os_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-18.04
+            os_name: Ubuntu 18.04
+          - os: ubuntu-20.04
+            os_name: Ubuntu 20.04
+          - os: macos-latest
+            os_name: latest macOS
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install latest Rust stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: rustfmt
+      - name: Install dependencies (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          brew install \
+            ffmpeg \
+            pkg-config
+      - name: Install dependencies (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            clang \
+            libavcodec-dev \
+            libavdevice-dev \
+            libavfilter-dev \
+            libavformat-dev \
+            libavresample-dev \
+            libavutil-dev \
+            libswscale-dev \
+            libswresample-dev \
+            pkg-config
+      - name: Build
+        run: |
+          make
+      - name: Test
+        run: |
+          make test
