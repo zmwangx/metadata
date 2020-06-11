@@ -37,7 +37,7 @@ release: man
 	cp man/metadata.1 dist/v$(VERSION)
 
 test:
-	cargo test
+	cargo test $(CARGO_BUILD_FLAGS)
 
 man: man/metadata.1
 
