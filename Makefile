@@ -31,6 +31,7 @@ default: man
 release: man
 	cargo build $(CARGO_BUILD_FLAGS) --release
 	cargo test $(CARGO_BUILD_FLAGS) --release
+	strip target/release/metadata
 	$(eval VERSION := $(shell grep -m 1 '^version = ' Cargo.toml | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'))
 	mkdir -p dist/v$(VERSION)
 	cp target/release/metadata dist/v$(VERSION)
