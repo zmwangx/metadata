@@ -85,4 +85,4 @@ ffprobe(1)
 COPYING
 -------
 Copyright \(C) 2018 Zhiming Wang. This software is released for free
-under the MIT License as published by by the Open Source Initiative.
+under the MIT License as published by the Open Source Initiative.
