@@ -6,9 +6,11 @@ ifeq ($(LIBAVCODEC_VERSION_MAJOR),)
   $(error cannot determine libavcodec version with pkg-config)
 else ifeq ($(shell test $(LIBAVCODEC_VERSION_MAJOR) -gt 58; echo $$?),0)
   $(warning unknown libavcodec version, possibly from FFmpeg >4; use at own risk)
-  FEATURES += ffmpeg42
+  FEATURES += ffmpeg43
 else ifeq ($(LIBAVCODEC_VERSION_MAJOR),58)
-  ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 54; echo $$?),0)
+  ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 91; echo $$?),0)
+    FEATURES += ffmpeg43
+  else ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 54; echo $$?),0)
     FEATURES += ffmpeg42
   else ifeq ($(shell test $(LIBAVCODEC_VERSION_MINOR) -ge 35; echo $$?),0)
     FEATURES += ffmpeg41

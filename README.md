@@ -100,12 +100,7 @@ Since this is my intro to Rust project, *the code is guaranteed to be shitty*.
 
 ## Installation
 
-**FFmpeg and the Rust toolchain are required.** Currently supported FFmpeg version:
-
-- 4.0.x (tested: 4.0.2);
-- 3.4.x (tested: 3.4.4).
-
-3.2.x is known to *not* work (tested 3.2.12 on Debian Stretch).
+**FFmpeg and the Rust toolchain are required.** FFmpeg 3.4 and later are supported.
 
 Since `metadata` links to `libav*`, which themselves are a beast to compile and come with complicated licensing and distribution restrictions (see `--enable-gpl`, `--enable-nonfree`, etc.), it is inconvenient for me to compile and distribute static binaries. Please compile from source.
 
