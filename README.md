@@ -2,7 +2,7 @@
 
 [![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://api.github.com/repos/zmwangx/metadata/tags&label=homebrew&query=$[0].name&colorB=orange&maxAge=1800)](#homebrew)
 [![crates.io](https://img.shields.io/crates/v/metadata.svg)](https://crates.io/crates/metadata)
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/7stwxtmpj8qkour5?svg=true)](https://ci.appveyor.com/project/zmwangx/metadata)
+[![Build status](https://github.com/zmwangx/metadata/workflows/test/badge.svg?branch=master)](https://github.com/zmwangx/metadata/actions)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
