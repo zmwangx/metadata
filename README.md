@@ -100,20 +100,6 @@ Since this is my intro to Rust project, *the code is guaranteed to be shitty*.
 
 ## Installation
 
-**FFmpeg and the Rust toolchain are required.** FFmpeg 3.4 and later are supported.
-
-Since `metadata` links to `libav*`, which themselves are a beast to compile and come with complicated licensing and distribution restrictions (see `--enable-gpl`, `--enable-nonfree`, etc.), it is inconvenient for me to compile and distribute static binaries. Please compile from source.
-
-The basic build command to run once you have the dependencies is
-
-```console
-$ make release
-```
-
-You should find `metadata` and `metadata.1` in `dist/<version>/`.
-
-OS/distro-specific instructions can be found below.
-
 ### Homebrew
 
 On macOS, `metadata` can be installed with Homebrew:
@@ -123,21 +109,46 @@ $ brew tap zmwangx/metadata https://github.com/zmwangx/metadata
 $ brew install zmwangx/metadata/metadata
 ```
 
-### Debian/Ubuntu
+### Ubuntu PPA
 
-On Debian/Ubuntu, the following dependencies need to be satisfied (in addition to the Rust toolchain):
+On Ubuntu 18.04 and 20.04, `metadata` can be installed from [ppa:zmwangx/metadata](https://launchpad.net/~zmwangx/+archive/ubuntu/metadata/):
 
 ```console
-$ apt install -y build-essential clang libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavresample-dev libavutil-dev libswscale-dev libswresample-dev pkg-config
+$ add-apt-repository ppa:zmwangx/metadata
+$ apt update && apt install metadata
 ```
 
-Note that FFmpeg 3.4.x on Ubuntu 18.04 LTS (bionic) and forward are supported; older FFmpeg from 16.04 LTS (xenial) and prior releases are not. FFmpeg 3.2.x on Debian Stretch is not supported. You may use the [jonathonf/ffmpeg-4](https://launchpad.net/~jonathonf/+archive/ubuntu/ffmpeg-4) PPA, which supports trusty, xenial, and bionic.
+### Building from source
+
+**FFmpeg with development headers and the Rust toolchain are required.** FFmpeg 3.4 and later are supported.
+
+On macOS, the following command should satisfy the non-Rust dependencies:
+
+```console
+$ brew install ffmpeg pkg-config
+```
+
+On Debian/Ubuntu, the following command should satisfy the non-Rust dependencies:
+
+```
+$ apt install -y build-essential clang libavcodec-dev libavformat-dev libavutil-dev pkg-config
+```
+
+Similarly for other distros.
+
+The basic build command to run once you have the dependencies is
+
+```console
+$ make release
+```
+
+You should find `metadata` and `metadata.1` in `dist/<version>/`.
 
 ## Usage
 
 ```console
 $ metadata -h
-metadata 0.1.0
+metadata 0.1.4
 Zhiming Wang <metadata@zhimingwang.org>
 Media file metadata for human consumption.
 
@@ -169,4 +180,4 @@ The [man page](man/metadata.1.adoc) has more details.
 
 ## Copyright
 
-Copyright (c) 2018 Zhiming Wang <metadata@zhimingwang.org>. The MIT License.
+Copyright (c) 2018-2020 Zhiming Wang <metadata@zhimingwang.org>. The MIT License.
