@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+export DH_VERBOSE = 1
+export DB_OPTIONS = -v
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	mkdir -p .cargo
+	cp debian/cargo.config .cargo/config
+	tar xJf debian/vendor.tar.xz
+	make FROZEN=1 release
+
+override_dh_auto_test:
+
+override_dh_auto_clean:
+	make clean
+	rm -rf vendor
