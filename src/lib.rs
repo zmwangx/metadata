@@ -3,6 +3,7 @@ extern crate ffmpeg_next as ffmpeg;
 extern crate handlebars;
 #[macro_use]
 extern crate lazy_static;
+extern crate libc;
 #[macro_use]
 extern crate log;
 extern crate regex;

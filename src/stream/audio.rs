@@ -3,6 +3,7 @@ use ffmpeg::codec::decoder::audio::Audio;
 use ffmpeg::codec::{self, Context, Parameters};
 use ffmpeg::util::channel_layout::ChannelLayout;
 use ffmpeg::DictionaryRef;
+use libc;
 use std::io;
 use std::str::from_utf8_unchecked;
 
@@ -80,9 +81,9 @@ impl AudioMetadata {
         let mut buf = [0u8; 128];
         unsafe {
             ffmpeg::ffi::av_get_channel_layout_string(
-                buf.as_mut_ptr() as *mut i8,
+                buf.as_mut_ptr() as *mut libc::c_char,
                 128,
-                nb_channels as i32,
+                nb_channels as libc::c_int,
                 layout.bits(),
             );
             layout_string = from_utf8_unchecked(&buf)
