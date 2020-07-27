@@ -54,3 +54,15 @@ jobs:
       - name: Test
         run: |
           make test
+
+  test-arm:
+    name: Test on arm64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Enable arm64 emulation
+        run: |
+          docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64
+      - name: Build and test
+        run: |
+          docker run --rm --volume $PWD:/app zmwangx/arm64v8-rust-ffmpeg:buster /bin/bash -c 'set -x; cd /app && make && make test'
