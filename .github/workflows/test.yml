@@ -25,7 +25,7 @@ jobs:
         with:
           toolchain: stable
           override: true
-          components: rustfmt
+          components: rustfmt, clippy
       - name: Install dependencies (macOS)
         if: startsWith(matrix.os, 'macos')
         run: |
@@ -54,6 +54,10 @@ jobs:
       - name: Test
         run: |
           make test
+      - name: Lint
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          make lint
 
   test-arm:
     name: Test on arm64

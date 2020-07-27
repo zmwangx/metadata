@@ -42,6 +42,10 @@ release: man
 test:
 	cargo test $(CARGO_BUILD_FLAGS)
 
+lint:
+	cargo clippy $(CARGO_BUILD_FLAGS) -- -D warnings
+	cargo fmt -- --check
+
 man: man/metadata.1
 
 man/metadata.1: man/metadata.1.adoc
