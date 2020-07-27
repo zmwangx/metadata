@@ -11,10 +11,7 @@ use std::path::Path;
 use std::process;
 
 fn main() {
-    match run_main() {
-        true => process::exit(0),
-        false => process::exit(1),
-    }
+    process::exit(if run_main() { 0 } else { 1 });
 }
 
 fn run_main() -> bool {

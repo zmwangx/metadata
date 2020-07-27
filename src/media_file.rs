@@ -111,19 +111,17 @@ impl MediaFileMetadata {
         };
         let bit_rate = if let Some(rate) = _bit_rate {
             Some(format!("{:.0} kb/s", rate as f64 / 1000f64))
-        } else {
-            if let Some(seconds) = _duration {
-                if seconds > 0f64 {
-                    Some(format!(
-                        "{:.0} kb/s",
-                        (file_size * 8) as f64 / seconds / 1000f64
-                    ))
-                } else {
-                    None
-                }
+        } else if let Some(seconds) = _duration {
+            if seconds > 0f64 {
+                Some(format!(
+                    "{:.0} kb/s",
+                    (file_size * 8) as f64 / seconds / 1000f64
+                ))
             } else {
                 None
             }
+        } else {
+            None
         };
 
         let mut _streams_metadata = Vec::new();
@@ -133,10 +131,9 @@ impl MediaFileMetadata {
         let streams_metadata_rendered = _streams_metadata
             .iter()
             .map(|m| {
-                m.render_default().expect(&format!(
-                    "failed to render metadata for stream #{}",
-                    m.index()
-                ))
+                m.render_default().unwrap_or_else(|_| {
+                    panic!("failed to render metadata for stream #{}", m.index())
+                })
             })
             .collect::<Vec<_>>();
 
@@ -172,7 +169,7 @@ impl MediaFileMetadata {
         let tagdict = format_ctx.metadata();
         let title = tagdict
             .get("title")
-            .or(tagdict.get("TITLE"))
+            .or_else(|| tagdict.get("TITLE"))
             .map(|s| s.to_string());
 
         let tags = tagdict.to_tags();

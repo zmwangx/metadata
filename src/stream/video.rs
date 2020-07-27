@@ -117,7 +117,7 @@ impl VideoMetadata {
         let dar = format!("{}:{}", _dar.numerator(), _dar.denominator());
 
         // Make sure video.frame_rate() is valid (denominator is not 0)
-        let _frame_rate = video.frame_rate().unwrap_or(Rational::new(1, 0));
+        let _frame_rate = video.frame_rate().unwrap_or_else(|| Rational::new(1, 0));
         let _frame_rate = match _frame_rate.denominator() {
             0 => None,
             _ => Some(_frame_rate.reduce()),

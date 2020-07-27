@@ -23,7 +23,7 @@ impl SubtitleMetadata {
     ) -> io::Result<SubtitleMetadata> {
         let language = tags
             .get("language")
-            .or(tags.get("LANGUAGE"))
+            .or_else(|| tags.get("LANGUAGE"))
             .map(str::to_string);
 
         let _codec = codec_par.id();

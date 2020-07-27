@@ -17,7 +17,7 @@ fn capitalize(s: String) -> String {
     if s == "" {
         return "".to_string();
     }
-    s.chars().nth(0).unwrap().to_ascii_uppercase().to_string() + &(s.clone())[1..s.len()]
+    s.chars().next().unwrap().to_ascii_uppercase().to_string() + &(s.clone())[1..s.len()]
 }
 
 pub fn format_name(format: &Input, path: &Path) -> String {
