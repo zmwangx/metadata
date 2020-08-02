@@ -36,10 +36,3 @@ features = ["codec", "format"]
 [dev-dependencies]
 quickcheck = "0.9.2"
 tempfile = "3.0.3"
-
-[features]
-default = ["ffmpeg43"]
-ffmpeg43 = ["ffmpeg-next/ffmpeg43"]
-ffmpeg42 = ["ffmpeg-next/ffmpeg42"]
-ffmpeg41 = ["ffmpeg-next/ffmpeg41"]
-ffmpeg4 = ["ffmpeg-next/ffmpeg4"]
