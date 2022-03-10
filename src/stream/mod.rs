@@ -72,8 +72,8 @@ impl StreamMetadata {
 
 pub fn parse_stream_meatadata(stream: Stream) -> io::Result<StreamMetadata> {
     let index = stream.index();
-    let codec_ctx = stream.codec();
     let codec_par = stream.parameters();
+    let codec_ctx = ffmpeg::codec::Context::from_parameters(stream.parameters())?;
     let tags = stream.metadata();
     Ok(match codec_ctx.medium() {
         Type::Video => {

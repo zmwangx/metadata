@@ -1,4 +1,5 @@
 use ffmpeg;
+use ffmpeg::codec::Context;
 use ffmpeg::ffi::AVFieldOrder;
 use ffmpeg::format::context::Input;
 use std::fmt;
@@ -31,7 +32,7 @@ pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Optio
     let mut decoder;
     if let Some(stream) = input.streams().best(ffmpeg::media::Type::Video) {
         stream_index = stream.index();
-        decoder = stream.codec().decoder().video()?;
+        decoder = Context::from_parameters(stream.parameters())?.decoder().video()?;
     } else {
         return Ok(None);
     }
@@ -55,9 +56,11 @@ pub fn get_scan_type(input: &mut Input, decode_frames: bool) -> io::Result<Optio
         if stream.index() == stream_index {
             frame_count += 1;
             debug!("decoding frame {}", frame_count);
-            if let Ok(true) = decoder.decode(&packet, &mut decoded) {
-                if decoded.is_interlaced() {
-                    return Ok(Some(ScanType::Interlaced));
+            if let Ok(()) = decoder.send_packet(&packet) {
+                if let Ok(()) = decoder.receive_frame(&mut decoded) {
+                    if decoded.is_interlaced() {
+                        return Ok(Some(ScanType::Interlaced));
+                    }
                 }
             }
             if frame_count >= NUM_FRAMES_TO_INSPECT {
