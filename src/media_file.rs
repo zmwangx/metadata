@@ -102,7 +102,7 @@ impl MediaFileMetadata {
         };
         let duration = _duration.map(util::format_seconds);
 
-        let _scan_type = { scan::get_scan_type(&mut format_ctx, false)? };
+        let _scan_type = { scan::get_scan_type(&mut format_ctx)? };
         let scan_type = _scan_type.clone().map(|s| s.to_string());
 
         let _bit_rate = match format_ctx.bit_rate() {
@@ -256,17 +256,5 @@ impl MediaFileMetadata {
             self.options.include_all_tags = false;
         }
         self
-    }
-
-    pub fn decode_frames(&mut self, on: bool) -> io::Result<&mut MediaFileMetadata> {
-        if on {
-            self.options.decode_frames = true;
-            let mut format_ctx = ffmpeg::format::input(&self.path)?;
-            self._scan_type = scan::get_scan_type(&mut format_ctx, true)?;
-            self.scan_type = self._scan_type.clone().map(|s| s.to_string());
-        } else {
-            self.options.decode_frames = false;
-        }
-        Ok(self)
     }
 }

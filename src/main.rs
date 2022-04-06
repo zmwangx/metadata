@@ -25,9 +25,6 @@ fn run_main() -> bool {
             "-c, --checksum     'Include file checksum(s)'
             -t, --tags          'Print metadata tags, except mundane ones'
             -A, --all-tags      'Print all metadata tags'
-            -s, --scan          'Decode frames to determine scan type \
-                                 (slower, but determines interlaced more accurately; \
-                                  see man page for details)'
             <FILE>...           'Media file(s)'",
         )
         .get_matches();
@@ -35,7 +32,6 @@ fn run_main() -> bool {
     let include_checksum = matches.is_present("checksum");
     let include_tags = matches.is_present("tags");
     let include_all_tags = matches.is_present("all-tags");
-    let decode_frames = matches.is_present("scan");
 
     let mut successful = true;
 
@@ -51,8 +47,7 @@ fn run_main() -> bool {
         let mut meta = MediaFileMetadata::new(&file)?;
         meta.include_checksum(include_checksum)?
             .include_tags(include_tags)
-            .include_all_tags(include_all_tags)
-            .decode_frames(decode_frames)?;
+            .include_all_tags(include_all_tags);
         Ok(meta)
     };
 

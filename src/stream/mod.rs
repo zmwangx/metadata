@@ -1,3 +1,4 @@
+use ffmpeg::codec::context::Context;
 use ffmpeg::media::Type;
 use ffmpeg::Stream;
 use std::io;
@@ -72,7 +73,7 @@ impl StreamMetadata {
 
 pub fn parse_stream_meatadata(stream: Stream) -> io::Result<StreamMetadata> {
     let index = stream.index();
-    let codec_ctx = stream.codec();
+    let codec_ctx = Context::from_parameters(stream.parameters())?;
     let codec_par = stream.parameters();
     let tags = stream.metadata();
     Ok(match codec_ctx.medium() {

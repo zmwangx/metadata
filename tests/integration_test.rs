@@ -71,12 +71,6 @@ macro_rules! media_file_tests {
                         meta.include_tags(false);
                     }
                 }
-
-                if let Some(output) = _output_with_frame_decoding {
-                    meta.decode_frames(true).unwrap();
-                    assert_eq!(output, meta.render_default().unwrap() + "\n");
-                    meta.decode_frames(false).unwrap();
-                }
             }
         )*
     }
