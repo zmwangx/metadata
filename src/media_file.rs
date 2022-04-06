@@ -1,15 +1,15 @@
-use ffmpeg;
-use ffmpeg::media::Type;
-use ffmpeg::util::rational::Rational;
+use crate::ffmpeg;
+use crate::ffmpeg::media::Type;
+use crate::ffmpeg::util::rational::Rational;
 use std::fs;
 use std::io;
 use std::path::Path;
 
-use prejudice;
-use scan::{self, ScanType};
-use stream::{parse_stream_meatadata, StreamMetadata};
-use tags::{Tags, ToTags};
-use util;
+use crate::prejudice;
+use crate::scan::{self, ScanType};
+use crate::stream::{parse_stream_meatadata, StreamMetadata};
+use crate::tags::{Tags, ToTags};
+use crate::util;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct MediaFileMetadataOptions {

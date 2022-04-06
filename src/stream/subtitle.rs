@@ -1,8 +1,8 @@
-use ffmpeg::codec::{self, Parameters};
-use ffmpeg::DictionaryRef;
+use crate::ffmpeg::codec::{self, Parameters};
+use crate::ffmpeg::DictionaryRef;
 use std::io;
 
-use prejudice;
+use crate::prejudice;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct SubtitleMetadata {

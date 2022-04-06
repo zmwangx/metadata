@@ -1,13 +1,13 @@
-use ffmpeg;
-use ffmpeg::codec::decoder::audio::Audio;
-use ffmpeg::codec::{self, Context, Parameters};
-use ffmpeg::util::channel_layout::ChannelLayout;
-use ffmpeg::DictionaryRef;
+use crate::ffmpeg;
+use crate::ffmpeg::codec::decoder::audio::Audio;
+use crate::ffmpeg::codec::{self, Context, Parameters};
+use crate::ffmpeg::util::channel_layout::ChannelLayout;
+use crate::ffmpeg::DictionaryRef;
 use libc;
 use std::io;
 use std::str::from_utf8_unchecked;
 
-use prejudice;
+use crate::prejudice;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct AudioMetadata {

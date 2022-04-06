@@ -1,6 +1,6 @@
-use ffmpeg::codec::context::Context;
-use ffmpeg::media::Type;
-use ffmpeg::Stream;
+use crate::ffmpeg::codec::context::Context;
+use crate::ffmpeg::media::Type;
+use crate::ffmpeg::Stream;
 use std::io;
 
 pub mod video;

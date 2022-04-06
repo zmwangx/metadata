@@ -1,7 +1,7 @@
-use ffmpeg;
-use ffmpeg::codec::context::Context;
-use ffmpeg::ffi::AVFieldOrder;
-use ffmpeg::format::context::Input;
+use crate::ffmpeg;
+use crate::ffmpeg::codec::context::Context;
+use crate::ffmpeg::ffi::AVFieldOrder;
+use crate::ffmpeg::format::context::Input;
 use std::fmt;
 use std::io;
 

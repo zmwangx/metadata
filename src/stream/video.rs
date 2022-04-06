@@ -1,11 +1,11 @@
-use ffmpeg::codec::{self, Context, Parameters};
-use ffmpeg::color;
-use ffmpeg::util::format::pixel::Pixel;
-use ffmpeg::util::rational::Rational;
-use ffmpeg::Stream;
+use crate::ffmpeg::codec::{self, Context, Parameters};
+use crate::ffmpeg::color;
+use crate::ffmpeg::util::format::pixel::Pixel;
+use crate::ffmpeg::util::rational::Rational;
+use crate::ffmpeg::Stream;
 use std::io;
 
-use prejudice;
+use crate::prejudice;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct VideoMetadata {

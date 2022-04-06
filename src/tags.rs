@@ -1,4 +1,4 @@
-use ffmpeg::DictionaryRef;
+use crate::ffmpeg::DictionaryRef;
 use regex::Regex;
 
 pub type Tags = Vec<(String, String)>;

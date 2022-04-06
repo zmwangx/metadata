@@ -26,11 +26,11 @@ pub mod stream;
 pub mod tags;
 pub mod util;
 
-pub use media_file::MediaFileMetadata;
-pub use render::Render;
-pub use scan::ScanType;
-pub use stream::{
+pub use crate::media_file::MediaFileMetadata;
+pub use crate::render::Render;
+pub use crate::scan::ScanType;
+pub use crate::stream::{
     AttachmentMetadata, AudioMetadata, DataMetadata, StreamMetadata, SubtitleMetadata,
     UnknownMetadata, VideoMetadata,
 };
-pub use tags::{Tags, ToTags};
+pub use crate::tags::{Tags, ToTags};

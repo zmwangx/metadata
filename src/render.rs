@@ -1,8 +1,8 @@
 use handlebars::{self, Handlebars};
 use serde::Serialize;
 
-use media_file::MediaFileMetadata;
-use stream::{self, StreamMetadata};
+use crate::media_file::MediaFileMetadata;
+use crate::stream::{self, StreamMetadata};
 
 pub trait Render: Serialize {
     fn render(&self, template: &str) -> Result<String, handlebars::TemplateRenderError> {
