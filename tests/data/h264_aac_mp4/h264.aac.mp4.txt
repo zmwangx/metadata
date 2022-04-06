@@ -5,7 +5,7 @@ Duration:               00:00:02.00
 Pixel dimensions:       128x72
 Sample aspect ratio:    1:1
 Display aspect ratio:   16:9
-Scan type:              Progressive scan*
+Scan type:              Progressive scan
 Frame rate:             25 fps
 Bit rate:               21 kb/s
 Streams:

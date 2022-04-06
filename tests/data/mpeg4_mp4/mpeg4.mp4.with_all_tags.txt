@@ -18,4 +18,5 @@ Tags:
   #0
     language:           und
     handler_name:       VideoHandler
+    vendor_id:          [0][0][0][0]
 
