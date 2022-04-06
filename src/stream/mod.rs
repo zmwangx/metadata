@@ -78,7 +78,7 @@ pub fn parse_stream_meatadata(stream: Stream) -> io::Result<StreamMetadata> {
     let tags = stream.metadata();
     Ok(match codec_ctx.medium() {
         Type::Video => {
-            StreamMetadata::VideoMetadata(VideoMetadata::new(index, codec_ctx, &codec_par)?)
+            StreamMetadata::VideoMetadata(VideoMetadata::new(index, stream, codec_ctx, &codec_par)?)
         }
         Type::Audio => {
             StreamMetadata::AudioMetadata(AudioMetadata::new(index, codec_ctx, &codec_par, &tags)?)

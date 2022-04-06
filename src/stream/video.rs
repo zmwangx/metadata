@@ -2,6 +2,7 @@ use ffmpeg::codec::{self, Context, Parameters};
 use ffmpeg::color;
 use ffmpeg::util::format::pixel::Pixel;
 use ffmpeg::util::rational::Rational;
+use ffmpeg::Stream;
 use std::io;
 
 use prejudice;
@@ -52,6 +53,7 @@ pub struct VideoMetadata {
 impl VideoMetadata {
     pub fn new(
         index: usize,
+        stream: Stream,
         codec_ctx: Context,
         codec_par: &Parameters,
     ) -> io::Result<VideoMetadata> {
@@ -116,8 +118,7 @@ impl VideoMetadata {
         let _dar = _sar * Rational(width as i32, height as i32);
         let dar = format!("{}:{}", _dar.numerator(), _dar.denominator());
 
-        // Make sure video.frame_rate() is valid (denominator is not 0)
-        let _frame_rate = video.frame_rate().unwrap_or_else(|| Rational::new(1, 0));
+        let _frame_rate = stream.avg_frame_rate();
         let _frame_rate = match _frame_rate.denominator() {
             0 => None,
             _ => Some(_frame_rate.reduce()),
