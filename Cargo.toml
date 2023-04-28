@@ -16,6 +16,9 @@ license = "MIT"
 name = "metadata"
 path = "src/lib.rs"
 
+[features]
+static = ["ffmpeg-next/static"]
+
 [dependencies]
 clap = "2.32.0"
 digest = { version = "0.9.0", features = ["std"] }
