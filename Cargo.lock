@@ -354,7 +354,7 @@ checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
 
 [[package]]
 name = "metadata"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "clap",
  "digest 0.9.0",
