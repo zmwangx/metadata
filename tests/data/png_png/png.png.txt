@@ -9,5 +9,5 @@ Scan type:              Progressive scan*
 Frame rate:             25 fps
 Bit rate:               
 Streams:
-    #0: Video, PNG, monob (pc), 100x100 (SAR 1:1, DAR 1:1), 25 fps
+    #0: Video, PNG, monob (pc, gbr/bt709/bt470m), 100x100 (SAR 1:1, DAR 1:1), 25 fps
 

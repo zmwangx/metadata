@@ -9,5 +9,5 @@ Scan type:              Progressive scan*
 Bit rate:               79 kb/s
 Streams:
     #0: Audio (und), MP3, 44100 Hz, mono, 64 kb/s
-    #1: Video, PNG, monob (pc), 100x100 (SAR 1:1, DAR 1:1)
+    #1: Video, PNG, monob (pc, gbr/unknown/unknown), 100x100 (SAR 1:1, DAR 1:1)
 
