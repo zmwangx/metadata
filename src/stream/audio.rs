@@ -77,14 +77,12 @@ impl AudioMetadata {
     fn get_channel_layout(audio: &Audio) -> (ChannelLayout, String) {
         let layout = audio.channel_layout();
         let layout_string: String;
-        let nb_channels = audio.channels();
         let mut buf = [0u8; 128];
         unsafe {
-            ffmpeg::ffi::av_get_channel_layout_string(
+            ffmpeg::ffi::av_channel_layout_describe(
+                &layout.0 as *const ffmpeg::ffi::AVChannelLayout,
                 buf.as_mut_ptr() as *mut libc::c_char,
                 128,
-                nb_channels as libc::c_int,
-                layout.bits(),
             );
             layout_string = from_utf8_unchecked(&buf)
                 .trim_end_matches(char::from(0))
