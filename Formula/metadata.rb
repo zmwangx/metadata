@@ -1,8 +1,8 @@
 class Metadata < Formula
   desc "Media file metadata for human consumption"
   homepage "https://github.com/zmwangx/metadata"
-  url "https://github.com/zmwangx/metadata/archive/v0.1.8.tar.gz"
-  sha256 "135d02ac45093e6af9405aeb95544c03283da8cb2c0a88fec5de4b85e0aa5b40"
+  url "https://github.com/zmwangx/metadata/archive/v0.1.9.tar.gz"
+  sha256 "e3706b1d54eb682bd105e13749b0be3f85434af818b898ca5c031a4485feb955"
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
