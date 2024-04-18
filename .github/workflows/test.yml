@@ -11,10 +11,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-18.04
-            os_name: Ubuntu 18.04
           - os: ubuntu-20.04
             os_name: Ubuntu 20.04
+          - os: ubuntu-22.04
+            os_name: Ubuntu 22.04
           - os: macos-latest
             os_name: latest macOS
       fail-fast: false
