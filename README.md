@@ -122,7 +122,7 @@ $ apt update && apt install metadata
 
 ### Nix
 
-On NixOS and any other Linux distro using Nix, `metadata` can be installed with Nix:
+On NixOS and any other Linux distro using Nix, `metadata` can be installed with Nix using the unstable channel:
 
 ```console
 $ # Install it to your local profile:
