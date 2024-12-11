@@ -130,7 +130,11 @@ mod tests {
         // Test some known problematic inputs previously caught by quickcheck.
         for &(bytes, base) in [(1100, Base::Base10), (4730, Base::Base10)].iter() {
             let (hs, valid) = human_size_gives_valid_range(bytes, base);
-            assert!(valid, "invalid human size {:?} for {}B in {:?}", hs, bytes, base);
+            assert!(
+                valid,
+                "invalid human size {:?} for {}B in {:?}",
+                hs, bytes, base
+            );
         }
     }
 

@@ -33,7 +33,7 @@ sha2 = "0.9.9"
 serde_derive = "1.0.198"
 
 [dependencies.ffmpeg-next]
-version = "7.0.0"
+version = "7.1.0"
 default-features = false
 features = ["codec", "format"]
 
