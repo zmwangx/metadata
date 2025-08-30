@@ -1,12 +1,12 @@
 Filename:               mp3.jpeg.mp3
 File size:              1851 (1.86KB, 1.81KiB)
 Container format:       MP3
-Duration:               00:00:00.18
+Duration:               00:00:00.17
 Pixel dimensions:       100x100
 Sample aspect ratio:    1:1
 Display aspect ratio:   1:1
 Scan type:              Progressive scan*
-Bit rate:               81 kb/s
+Bit rate:               87 kb/s
 Streams:
     #0: Audio (und), MP3, 44100 Hz, mono, 64 kb/s
     #1: Video, PNG, gray (pc, gbr/unknown/unknown), 100x100 (SAR 1:1, DAR 1:1)

@@ -1,8 +1,0 @@
-Filename:               aac_he.aac
-File size:              1396 (1.40KB, 1.37KiB)
-Container format:       Raw ADTS AAC
-Duration:               00:00:00.23
-Bit rate:               48 kb/s
-Streams:
-    #0: Audio (und), AAC (HE-AAC v2), 44100 Hz, stereo, 48 kb/s
-

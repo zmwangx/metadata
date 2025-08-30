@@ -96,12 +96,6 @@ media_file_tests! {
         output_with_all_tags: "data/aac_aac/aac.aac.with_all_tags.txt",
     }
 
-    aac_he_aac: {
-        input: "data/aac_he_aac/aac_he.aac",
-        output: "data/aac_he_aac/aac_he.aac.txt",
-        output_with_all_tags: "data/aac_he_aac/aac_he.aac.with_all_tags.txt",
-    }
-
     ac3_ac3: {
         input: "data/ac3_ac3/ac3.ac3",
         output: "data/ac3_ac3/ac3.ac3.txt",

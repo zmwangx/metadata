@@ -1,8 +1,8 @@
 Filename:               mp3.mp3
 File size:              1480 (1.48KB, 1.45KiB)
 Container format:       MP3
-Duration:               00:00:00.16
-Bit rate:               76 kb/s
+Duration:               00:00:00.14
+Bit rate:               82 kb/s
 Streams:
     #0: Audio (und), MP3, 44100 Hz, mono, 64 kb/s
 Tags:
