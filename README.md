@@ -2,6 +2,7 @@
 
 [![Homebrew](https://img.shields.io/badge/dynamic/json.svg?url=https://api.github.com/repos/zmwangx/metadata/tags&label=homebrew&query=$[0].name&colorB=orange&maxAge=1800)](#homebrew)
 [![crates.io](https://img.shields.io/crates/v/metadata.svg)](https://crates.io/crates/metadata)
+[![Nix](https://repology.org/badge/version-for-repo/nix_unstable/metadata.svg?header=nixpkgs-unstable)](#nix)
 [![Build status](https://github.com/zmwangx/metadata/workflows/test/badge.svg?branch=master)](https://github.com/zmwangx/metadata/actions)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -12,6 +13,7 @@
 - [Installation](#installation)
   - [Homebrew](#homebrew)
   - [Debian/Ubuntu](#debianubuntu)
+  - [NixOS/Nixpkgs]($nix)
 - [Usage](#usage)
 - [Performance](#performance)
 - [Bugs](#bugs)
@@ -116,6 +118,17 @@ On Ubuntu 18.04 and 20.04, `metadata` can be installed from [ppa:zmwangx/metadat
 ```console
 $ add-apt-repository ppa:zmwangx/metadata
 $ apt update && apt install metadata
+```
+
+### Nix
+
+On NixOS and any other Linux distro using Nix, `metadata` can be installed with Nix using the unstable channel:
+
+```console
+$ # Install it to your local profile:
+$ nix-env -iA metadata
+$ # As a Nix shell:
+$ nix-shell -p metadata
 ```
 
 ### Building from source
